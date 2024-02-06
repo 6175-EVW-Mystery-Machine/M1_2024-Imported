@@ -15,7 +15,7 @@ public final class Constants {
     public static final int kShooterLeftCAN = 11;
     public static final int kShooterRightCAN = 12;
     public static final int kTransferCAN = 14;
-    public static final int kRotatorCAN = 15;
+    public static final int kRotatorCAN = 10;
     public static final int kIntakeCAN = 13;
     public static final int kIntakeForwardChannel = 1;
 

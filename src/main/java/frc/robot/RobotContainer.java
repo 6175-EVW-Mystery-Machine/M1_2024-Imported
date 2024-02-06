@@ -4,9 +4,11 @@
 
 package frc.robot;
 
+import edu.wpi.first.cscore.HttpCamera;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.ProfiledPIDController;
+import edu.wpi.first.math.estimator.PoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
@@ -15,6 +17,9 @@ import edu.wpi.first.math.trajectory.TrajectoryConfig;
 import edu.wpi.first.math.trajectory.TrajectoryGenerator;
 import edu.wpi.first.wpilibj.PS4Controller;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.PS4Controller.Button;
 import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.DriveConstants;
@@ -31,6 +36,10 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
 
 import java.util.List;
+import java.util.Map;
+
+import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.commands.PathPlannerAuto;
 
 /*
  * This class is where the bulk of the robot should be declared.  Since Command-based is a
@@ -57,6 +66,11 @@ public class RobotContainer {
     // Configure the button bindings
     configureButtonBindings();
 
+    private final AutoBuilder autoBuilder = new AutoBuilder();
+
+private final AutoScoreCommand autoScoreCommand =
+    new AutoScoreCommand(scoreLocation, shooterSubsystem::hasCone, autoBuilder, m_robotDrive);
+
     // Configure default commands
     m_robotDrive.setDefaultCommand(
         // The left stick controls translation of the robot.
@@ -72,6 +86,10 @@ public class RobotContainer {
     m_transfer.setDefaultCommand(
       new RunCommand(
         () -> m_transfer.c_runTransfer(0), m_transfer));
+
+    m_rotJog.setDefaultCommand(
+      new RunCommand(
+        () -> m_rotJog.c_rotJog(0), m_rotJog));
   }
   /**
    * Use this method to define your button->command mappings. Buttons can be
@@ -101,10 +119,10 @@ public class RobotContainer {
 
 
     //SET X BINDING
-    new JoystickButton(m_driverController, 3)
-        .whileTrue(new RunCommand(
-            () -> m_robotDrive.setX(),
-            m_robotDrive));
+    // new JoystickButton(m_driverController, 3)
+    //     .whileTrue(new RunCommand(
+    //         () -> m_robotDrive.setX(),  
+    //         m_robotDrive));
 
     new JoystickButton(m_driverController, Button.kL2.value).whileTrue(new RunCommand(() -> m_shooter.c_startFlywheel(1 , 1), m_shooter));
     new JoystickButton(m_driverController, Button.kL2.value).whileFalse(new RunCommand(() -> m_shooter.c_stopFlywheel(), m_shooter));
@@ -112,17 +130,51 @@ public class RobotContainer {
     new JoystickButton(m_driverController, Button.kR2.value).whileTrue(new RunCommand(() -> m_shooter.c_startFlywheel(-0.05 , -0.05), m_shooter));
     new JoystickButton(m_driverController, Button.kR2.value).whileFalse(new RunCommand(() -> m_shooter.c_stopFlywheel(), m_shooter));
 
-    new JoystickButton(m_driverController, Button.kR1.value).whileTrue(new RunCommand(() -> m_transfer.c_runTransfer(0.1), m_transfer));
-    new JoystickButton(m_driverController, Button.kR1.value).whileFalse(new RunCommand(() -> m_transfer.c_runTransfer(0), m_transfer));
+    new JoystickButton(m_driverController, 3).whileTrue(new RunCommand(() -> m_transfer.c_runTransfer(0.3), m_transfer));
+    new JoystickButton(m_driverController, 3).whileFalse(new RunCommand(() -> m_transfer.c_runTransfer(0), m_transfer));
+
+    new JoystickButton(m_driverController, 1).whileTrue(new RunCommand(() -> m_transfer.c_runTransfer(-1), m_transfer));
+    new JoystickButton(m_driverController, 1).whileFalse(new RunCommand(() -> m_transfer.c_runTransfer(0), m_transfer));
+
 
     //############ INPUT BUTTON BINDINGS #########################
     new JoystickButton(m_driverController, 4).whileTrue(new RunCommand(() -> m_rotJog.c_rotJog(-0.1), m_rotJog));
     new JoystickButton(m_driverController, 2).whileTrue(new RunCommand(() -> m_rotJog.c_rotJog(0.1), m_rotJog));
 
     new JoystickButton(m_driverController, 1).whileTrue(new RunCommand(() -> m_intake.c_intakeRun(0.5), m_intake));
-      new JoystickButton(m_driverController, 1).whileFalse(new RunCommand(() -> m_intake.c_intakeRun(0), m_intake));
+    new JoystickButton(m_driverController, 1).whileFalse(new RunCommand(() -> m_intake.c_intakeRun(0), m_intake));
+
+    new JoystickButton(m_driverController, 10).onTrue(new RunCommand(() -> m_robotDrive.zeroHeading(), m_robotDrive));
   }
 
+
+
+ private void configureDashboard() {
+    /**** Driver tab ****/
+    var driverTab = Shuffleboard.getTab("Driver");
+    
+    Shuffleboard.getTab("Pre-round")
+    .add("Auto Mode", autoModeChooser)
+    .withSize(2, 1) // make the widget 2x1
+    .withPosition(0, 0); // place it in the top-left corner
+
+    driverTab.add(new HttpCamera("limelight-high", "http://10.70.28.13:1181"))
+        .withWidget(BuiltInWidgets.kCameraStream)
+        .withProperties(Map.of("showCrosshair", true, "showControls", false, "rotation", "QUARTER_CCW"))
+        .withSize(4, 6).withPosition(0, 0);
+
+    /**** Vision tab ****/
+    final var visionTab = Shuffleboard.getTab("Vision");
+  
+    // Pose estimation
+    PoseEstimator.withWidget(visionTab);
+
+  }
+
+
+
+
+  
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
    *

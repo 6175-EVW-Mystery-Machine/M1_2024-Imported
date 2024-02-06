@@ -69,8 +69,11 @@ public class DriveSubsystem extends SubsystemBase {
           m_rearRight.getPosition()
       });
 
+  
   /** Creates a new DriveSubsystem. */
   public DriveSubsystem() {
+
+    // //################ PATH PLANNER WORKING ON ################
         AutoBuilder.configureHolonomic(
             this::getPose, // Robot pose supplier
             this::resetOdometry, // Method to reset odometry (will be called if your auto has a starting pose)
@@ -152,6 +155,27 @@ public class DriveSubsystem extends SubsystemBase {
    *                      field.
    * @param rateLimit     Whether to enable rate limiting for smoother control.
    */
+  public void driveRobotRelative(ChassisSpeeds chassisSpeeds) {
+    var swerveModuleStates = 
+        DriveConstants.kDriveKinematics.toSwerveModuleStates(chassisSpeeds);
+  
+    SwerveDriveKinematics.desaturateWheelSpeeds(
+        swerveModuleStates, DriveConstants.kMaxSpeedMetersPerSecond);
+  
+    m_frontLeft.setDesiredState(swerveModuleStates[0]);
+    m_frontRight.setDesiredState(swerveModuleStates[1]);
+    m_rearLeft.setDesiredState(swerveModuleStates[2]);
+    m_rearRight.setDesiredState(swerveModuleStates[3]);
+  }
+  
+  public ChassisSpeeds getRobotRelativeSpeeds() {
+    return DriveConstants.kDriveKinematics.toChassisSpeeds(
+        m_frontRight.getState(),
+        m_frontRight.getState(),
+        m_rearLeft.getState(),
+        m_rearRight.getState());
+  }
+
   public void drive(double xSpeed, double ySpeed, double rot, boolean fieldRelative, boolean rateLimit) {
     
     double xSpeedCommanded;
