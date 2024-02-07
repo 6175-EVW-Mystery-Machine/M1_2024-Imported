@@ -170,7 +170,7 @@ public class DriveSubsystem extends SubsystemBase {
   
   public ChassisSpeeds getRobotRelativeSpeeds() {
     return DriveConstants.kDriveKinematics.toChassisSpeeds(
-        m_frontRight.getState(),
+        m_frontLeft.getState(),
         m_frontRight.getState(),
         m_rearLeft.getState(),
         m_rearRight.getState());
