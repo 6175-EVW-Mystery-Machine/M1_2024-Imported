@@ -16,8 +16,10 @@ public final class Constants {
     public static final int kShooterRightCAN = 12;
     public static final int kTransferCAN = 14;
     public static final int kRotatorCAN = 10;
-    public static final int kIntakeCAN = 13;
+    public static final int kIntakeCAN = 15;
     public static final int kIntakeForwardChannel = 1;
+    public static double ktriggerL;
+     public static double ktriggerR;
 
     //SPEED VALUES
 
@@ -95,7 +97,7 @@ public final class Constants {
     public static final double kTurningEncoderPositionPIDMinInput = 0; // radians
     public static final double kTurningEncoderPositionPIDMaxInput = kTurningEncoderPositionFactor; // radians
 
-    public static final double kDrivingP = 0.02;
+    public static final double kDrivingP = 0.05;
     public static final double kDrivingI = 0;
     public static final double kDrivingD = 0;
     public static final double kDrivingFF = 1 / kDriveWheelFreeSpeedRps;
@@ -121,20 +123,20 @@ public final class Constants {
     public static final double kDriveDeadband = 0.1;
 
     //################## ENTER VALUES ################
-    public static int kTriangleButton;
-    public static int kSquareButton;
-    public static int kCircleButtion;
-    public static int kXButton;
+    public static int kTriangleButton = 4;
+    public static int kSquareButton = 3;
+    public static int kCircleButtion = 2;
+    public static int kXButton = 1;
 
-    public static int kLeftBumper;
-    public static int kRightBumper;
+    public static int kLeftBumper = 5;
+    public static int kRightBumper = 6;
     public static int kLeftTrigger;
     public static int kRightTrigger; 
 
-    public static int kLeftArrowDeg;
-    public static int kRightArrowDeg;
-    public static int kUpArrowDeg;
-    public static int kDownArrowDeg;
+    public static int kUpArrowDeg = 0;
+    public static int kDownArrowDeg = 180;
+    public static int kLeftArrowDeg = 270;
+    public static int kRightArrowDeg = 90; 
   }
 
   public static final class AutoConstants {

@@ -1,18 +1,18 @@
-// package frc.robot.subsystems;
-// import frc.robot.Constants;
+package frc.robot.subsystems;
+import frc.robot.Constants;
 
-// import com.revrobotics.AbsoluteEncoder;
-// import com.revrobotics.CANSparkFlex;
-// import com.revrobotics.RelativeEncoder;
-// import com.revrobotics.SparkPIDController;
-// import com.revrobotics.CANSparkBase.ControlType;
-// import com.revrobotics.CANSparkBase.IdleMode;
-// import com.revrobotics.CANSparkLowLevel.MotorType;
+import com.revrobotics.AbsoluteEncoder;
+import com.revrobotics.CANSparkFlex;
+import com.revrobotics.RelativeEncoder;
+import com.revrobotics.SparkPIDController;
+import com.revrobotics.CANSparkBase.ControlType;
+import com.revrobotics.CANSparkBase.IdleMode;
+import com.revrobotics.CANSparkLowLevel.MotorType;
 
-// import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-// import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-// public class Rotator extends SubsystemBase {
+public class Rotator extends SubsystemBase {
 
 //   private final CANSparkFlex m_rotatorMotor;
 
@@ -20,7 +20,7 @@
 //   // private SparkPIDController m_pidController;
 //   // public double kP, kI, kD, kIz, kFF, kMaxOutput, kMinOutput;
 
-//   public Rotator() {
+public Rotator() {
 
 //   m_rotatorMotor = new CANSparkFlex(Constants.MyConstants.kRotatorCAN, MotorType.kBrushless);
 
@@ -59,10 +59,10 @@
 //   //   SmartDashboard.putNumber("Min Output", kMinOutput);
 //   //   SmartDashboard.putNumber("Set Rotations", 0);
 
-//   // }
+}
 
-//   @Override
-//   public void periodic() {
+@Override
+public void periodic() {
 //   //   // read PID coefficients from SmartDashboard
 //   //   double p = SmartDashboard.getNumber("P Gain", 0);
 //   //   double i = SmartDashboard.getNumber("I Gain", 0);
@@ -81,8 +81,8 @@
 //   //   if((max != kMaxOutput) || (min != kMinOutput)) { 
 //   //     m_pidController.setOutputRange(min, max); 
 //   //     kMinOutput = min; kMaxOutput = max; 
-//   //   }
-//   }
+}
+}
 
 //   // public void rotToDeg(int deg) {
 //   //   int pos;

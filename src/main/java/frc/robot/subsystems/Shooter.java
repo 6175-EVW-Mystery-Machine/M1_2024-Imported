@@ -4,7 +4,11 @@ import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkFlex;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
+import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.XboxController.Axis;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants;
 
 public class Shooter extends SubsystemBase {
@@ -44,4 +48,13 @@ public class Shooter extends SubsystemBase {
     m_shooterRight.set(0);
   }
 
+  public void c_startFlywheelAxis(double axis, double uSpeed, double dSpeed) {
+    if (axis >= 0.5) {
+    m_shooterLeft.set(uSpeed);
+    m_shooterRight.set(dSpeed);
+    } else {
+    m_shooterLeft.set(0);
+    m_shooterRight.set(0);
+    }
+  }
 }

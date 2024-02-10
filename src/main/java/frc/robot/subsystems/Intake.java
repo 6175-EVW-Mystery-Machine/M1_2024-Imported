@@ -9,6 +9,7 @@ import com.revrobotics.CANSparkLowLevel.MotorType;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.Solenoid;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Intake extends SubsystemBase {
@@ -45,5 +46,13 @@ public class Intake extends SubsystemBase {
     }
     
     m_intakeDriver.set(speed);
+  }
+
+  public void c_startIntakeAxis(double axis, double speed) {
+    if (axis >= 0.5) {
+    m_intakeDriver.set(speed);
+    } else {
+    m_intakeDriver.set(0);
+    }
   }
 }
