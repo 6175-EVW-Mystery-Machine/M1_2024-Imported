@@ -32,6 +32,7 @@ import frc.robot.commands.SetXDrive;
 import frc.robot.commands.StartFlywheels;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.Rotator;
 import frc.robot.subsystems.RotatorJog;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Sweeper;
@@ -58,6 +59,7 @@ public class RobotContainer {
   private final RotatorJog m_rotJog = new RotatorJog();
   private final Intake m_intake = new Intake();
   private final Sweeper m_sweeper = new Sweeper();
+  private final Rotator m_rotator = new Rotator();
 
   // private final SendableChooser<Command> autoChooser;
 
@@ -122,7 +124,9 @@ public class RobotContainer {
   
   private void configureButtonBindings() {
 
-   // ********NEED TO FIX RATIO FOR SHOOTER DUE TO SPROCKET DIFFERENTIAL ********  2/7
+    //TEST PID CLOSED LOOP CONTROLLER
+    new JoystickButton(m_driverController, 1).onTrue(new RunCommand(()-> m_rotator.c_rotatorToSetpoint(50), m_rotator));
+
     new JoystickButton(m_driverController, 9).whileTrue(new RunCommand(
             () -> m_robotDrive.drive(
                 -MathUtil.applyDeadband((m_driverController.getLeftY()), OIConstants.kDriveDeadband),

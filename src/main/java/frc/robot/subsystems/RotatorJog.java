@@ -17,7 +17,7 @@ public class RotatorJog extends SubsystemBase {
 
   public RotatorJog() {
    // m_rotJog = new CANSparkFlex(Constants.MyConstants.kRotatorCAN, MotorType.kBrushless);
-m_rotJog = new CANSparkFlex(10, MotorType.kBrushless);
+m_rotJog = new CANSparkFlex(30, MotorType.kBrushless);
 
     m_rotJog.restoreFactoryDefaults();  
     m_rotJog.setInverted(false);
