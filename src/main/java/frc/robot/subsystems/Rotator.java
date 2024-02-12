@@ -49,8 +49,8 @@ public Rotator() {
     kD = 1; 
     kIz = 0; 
     kFF = 0; 
-    kMaxOutput = 1; 
-    kMinOutput = -1;
+    kMaxOutput = 0.1; 
+    kMinOutput = -0.1;
 
     // set PID coefficients
     m_pidController.setP(kP);
@@ -65,13 +65,13 @@ public Rotator() {
 @Override
 public void periodic() {
 // TO BE TUNED
-double p = SmartDashboard.getNumber("P Gain", 0);
-double i = SmartDashboard.getNumber("I Gain", 0);
-double d = SmartDashboard.getNumber("D Gain", 0);
+double p = SmartDashboard.getNumber("P Gain", 0.1);
+double i = SmartDashboard.getNumber("I Gain", 1e-4);
+double d = SmartDashboard.getNumber("D Gain", 1);
 double iz = SmartDashboard.getNumber("I Zone", 0);
 double ff = SmartDashboard.getNumber("Feed Forward", 0);
-double max = SmartDashboard.getNumber("Max Output", 0);
-double min = SmartDashboard.getNumber("Min Output", 0);
+double max = SmartDashboard.getNumber("Max Output", 0.1);
+double min = SmartDashboard.getNumber("Min Output", -0.1);
 double rotations = SmartDashboard.getNumber("Set Rotations", 0);
 
 // if PID coefficients on SmartDashboard have changed, write new values to controller
@@ -105,5 +105,9 @@ m_pidController.setReference(rotations, CANSparkMax.ControlType.kPosition);
 
 public void c_rotatorToSetpoint(double setpoint) {
     m_pidController.setReference(setpoint, ControlType.kPosition);
+}
+
+public void c_rotJog(double speed) {
+    m_motor.set(speed);
 }
 }

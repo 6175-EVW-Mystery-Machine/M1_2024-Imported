@@ -125,7 +125,10 @@ public class RobotContainer {
   private void configureButtonBindings() {
 
     //TEST PID CLOSED LOOP CONTROLLER
-    new JoystickButton(m_driverController, 1).onTrue(new RunCommand(()-> m_rotator.c_rotatorToSetpoint(50), m_rotator));
+    new JoystickButton(m_driverController, 1).onTrue(new RunCommand(()-> m_rotator.c_rotatorToSetpoint(2.5), m_rotator));
+    new POVButton(m_driverController, 90).onTrue(new RunCommand(()-> m_rotator.c_rotatorToSetpoint(-5), m_rotator));
+    new POVButton(m_driverController, 0).onTrue(new RunCommand(()-> m_rotator.c_rotatorToSetpoint(-10), m_rotator));
+
 
     new JoystickButton(m_driverController, 9).whileTrue(new RunCommand(
             () -> m_robotDrive.drive(
@@ -159,10 +162,10 @@ public class RobotContainer {
     new JoystickButton(m_driverController, 6).whileFalse(new RunCommand(() -> m_transfer.c_runTransfer(0), m_transfer));
     new JoystickButton(m_driverController, 2).whileTrue(new RunCommand(() -> m_shooter.c_startFlywheel(-0.2 , -0.2), m_shooter));
     new JoystickButton(m_driverController, 2).whileFalse(new RunCommand(() -> m_shooter.c_startFlywheelAxis(Constants.MyConstants.ktriggerL, 0.75, 0.75), m_shooter));
-    new JoystickButton(m_driverController, OIConstants.kTriangleButton).whileTrue(new RunCommand(() -> m_rotJog.c_rotJog(0.2), m_rotJog));
-    new JoystickButton(m_driverController, OIConstants.kTriangleButton).whileFalse(new RunCommand(() -> m_rotJog.c_rotJog(0), m_rotJog));
-    new JoystickButton(m_driverController, OIConstants.kSquareButton).whileTrue(new RunCommand(() -> m_rotJog.c_rotJog(-0.2), m_rotJog));
-    new JoystickButton(m_driverController, OIConstants.kSquareButton).whileFalse(new RunCommand(() -> m_rotJog.c_rotJog(0), m_rotJog));
+    // new JoystickButton(m_driverController, OIConstants.kTriangleButton).whileTrue(new RunCommand(() -> m_rotator.c_rotJog(0.2), m_rotator));
+    // new JoystickButton(m_driverController, OIConstants.kTriangleButton).whileFalse(new RunCommand(() -> m_rotator.c_rotJog(0), m_rotator));
+    // new JoystickButton(m_driverController, OIConstants.kSquareButton).whileTrue(new RunCommand(() -> m_rotator.c_rotJog(-0.2), m_rotator));
+    // new JoystickButton(m_driverController, OIConstants.kSquareButton).whileFalse(new RunCommand(() -> m_rotator.c_rotJog(0), m_rotator));
     new JoystickButton(m_driverController, 7).onTrue(new RunCommand(() -> m_robotDrive.zeroHeading(), m_robotDrive));
     
 
