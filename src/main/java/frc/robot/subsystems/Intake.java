@@ -27,8 +27,9 @@ public class Intake extends SubsystemBase {
   
   }
 
-  public void c_intakeRun(double speed) {
+  public Command c_intakeRun(double speed) {
     m_intakeDriver.set(speed);
+    return null;
   }
 
 

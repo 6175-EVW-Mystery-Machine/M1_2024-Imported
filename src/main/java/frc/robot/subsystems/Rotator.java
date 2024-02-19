@@ -46,7 +46,7 @@ public Rotator() {
     // PID coefficients
     kP = 0.1; 
     kI = 1e-4;
-    kD = 1; 
+    kD = 0.5; 
     kIz = 0; 
     kFF = 0; 
     kMaxOutput = 0.1; 

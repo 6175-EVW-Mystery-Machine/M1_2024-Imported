@@ -5,13 +5,14 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.subsystems.Shooter;
+import frc.robot.subsystems.Transfer;
 
-public class StartFlywheels extends Command {
-  Shooter m_shooter = new Shooter();
-  /** Creates a new StartFlywheels. */
-  public StartFlywheels() {
-   addRequirements(m_shooter);
+public class FeedShooter extends Command {
+  
+  Transfer m_transfer = new Transfer();
+
+  public FeedShooter() {
+    addRequirements(m_transfer);
   }
 
   // Called when the command is initially scheduled.
@@ -21,12 +22,14 @@ public class StartFlywheels extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_shooter.c_startFlywheel(0.9, 0.792);
+    m_transfer.c_runTransfer(0.5);
   }
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+    m_transfer.c_runTransfer(0);
+  }
 
   // Returns true when the command should end.
   @Override

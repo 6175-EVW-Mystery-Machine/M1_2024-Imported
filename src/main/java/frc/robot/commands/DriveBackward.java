@@ -4,14 +4,15 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.subsystems.Shooter;
+import frc.robot.Constants.OIConstants;
+import frc.robot.subsystems.DriveSubsystem;
 
-public class StartFlywheels extends Command {
-  Shooter m_shooter = new Shooter();
-  /** Creates a new StartFlywheels. */
-  public StartFlywheels() {
-   addRequirements(m_shooter);
+public class DriveBackward extends Command {
+  DriveSubsystem m_drive = new DriveSubsystem();
+  public DriveBackward() {
+    addRequirements(m_drive);
   }
 
   // Called when the command is initially scheduled.
@@ -21,7 +22,11 @@ public class StartFlywheels extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_shooter.c_startFlywheel(0.9, 0.792);
+    m_drive.drive(
+                -MathUtil.applyDeadband((-0.2), OIConstants.kDriveDeadband),
+                -MathUtil.applyDeadband((0), OIConstants.kDriveDeadband),
+                -MathUtil.applyDeadband(0, OIConstants.kDriveDeadband),
+                true, true);
   }
 
   // Called once the command ends or is interrupted.

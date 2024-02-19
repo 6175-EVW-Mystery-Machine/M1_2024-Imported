@@ -38,9 +38,10 @@ public class Shooter extends SubsystemBase {
   }
 
   //MY METHODS - IDK WHAT ITS ACTUALLY CALLED
-  public void c_startFlywheel(double rSpeed, double lSpeed) {
+  public Command c_startFlywheel(double rSpeed, double lSpeed) {
     m_shooterLeft.set(lSpeed);
     m_shooterRight.set(rSpeed);
+    return null;
   }
 
   public void c_stopFlywheel() {
