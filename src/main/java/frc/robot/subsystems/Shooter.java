@@ -7,6 +7,7 @@ import com.revrobotics.CANSparkLowLevel.MotorType;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.XboxController.Axis;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants;
@@ -15,6 +16,7 @@ public class Shooter extends SubsystemBase {
 
   private final CANSparkFlex m_shooterLeft;
   private final CANSparkFlex m_shooterRight;
+  private Blinkin m_blinkin;
 
   public Shooter() {
     m_shooterLeft = new CANSparkFlex(Constants.MyConstants.kShooterLeftCAN, MotorType.kBrushless);
@@ -57,5 +59,6 @@ public class Shooter extends SubsystemBase {
     m_shooterLeft.set(0);
     m_shooterRight.set(0);
     }
+  
   }
 }

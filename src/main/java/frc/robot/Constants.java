@@ -21,6 +21,9 @@ public final class Constants {
     public static double ktriggerL;
      public static double ktriggerR;
 
+    public static String colorSensed;
+    public static double blinkinTest;
+
     //SPEED VALUES
 
     //OTHER VALUES AND CONSTANTS

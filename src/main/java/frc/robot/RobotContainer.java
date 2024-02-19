@@ -30,6 +30,7 @@ import frc.robot.commands.Amp;
 import frc.robot.commands.RunIntake;
 import frc.robot.commands.SetXDrive;
 import frc.robot.commands.StartFlywheels;
+import frc.robot.subsystems.Blinkin;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Rotator;
@@ -60,6 +61,7 @@ public class RobotContainer {
   private final Intake m_intake = new Intake();
   private final Sweeper m_sweeper = new Sweeper();
   private final Rotator m_rotator = new Rotator();
+  private final Blinkin m_blinkin = new Blinkin();
 
   private final SendableChooser<Command> autoChooser;
 
@@ -101,18 +103,32 @@ public class RobotContainer {
     ));
 
     m_shooter.setDefaultCommand(
-      new RunCommand(() -> m_shooter.c_startFlywheelAxis(Constants.MyConstants.ktriggerL, 0.9, 0.792), m_shooter
+      new RunCommand(() -> m_shooter.c_startFlywheelAxis(Constants.MyConstants.ktriggerL, 0.4, 0.4), m_shooter
     ));
+    //LOWER 24 - 16
+    //UPPer 24 - 17
 
-        NamedCommands.registerCommand("RunIntake", m_intake.c_intakeRun(0.75));
-        NamedCommands.registerCommand("StartFlywheels", m_shooter.c_startFlywheel(0.9,0.792));
-        NamedCommands.registerCommand("FeedShooter", m_transfer.c_runTransfer(0.5));
+    m_blinkin.setDefaultCommand(new RunCommand(()-> m_blinkin.c_shooterBlinkin(), m_blinkin));
+  
+        // NamedCommands.registerCommand("RunIntake", m_intake.c_intakeRun(0.75));
+        // NamedCommands.registerCommand("StartFlywheels", m_shooter.c_startFlywheel(0.9,0.792));
+        // NamedCommands.registerCommand("FeedShooter", m_transfer.c_runTransfer(0.5));
 
       }
-  
+
+    
   private void configureButtonBindings() {
 
-    //TEST PID CLOSED LOOP CONTROLLER
+    new JoystickButton(m_driverController,6).onTrue(new RunCommand(()-> m_blinkin.c_intakeBlinkin(), m_blinkin));
+    new JoystickButton(m_driverController,6).onFalse(new RunCommand(()-> m_blinkin.c_shooterBlinkin(), m_blinkin));
+    new JoystickButton(m_driverController, 2).whileTrue(new RunCommand(() -> m_blinkin.c_sourceBlinkin(), m_blinkin));
+    new JoystickButton(m_driverController, 8).whileTrue(new RunCommand(() -> m_blinkin.c_floorBlinkin(), m_blinkin));
+    new JoystickButton(m_driverController, 3).whileTrue(new RunCommand(() -> m_blinkin.c_ampBlinkin(), m_blinkin));
+    // new POVButton(m_driverController, 90).onTrue(new RunCommand(()-> m_blinkin.c_lightSet(0.73), m_blinkin));
+    // new POVButton(m_driverController, 0).onTrue(new RunCommand(()-> m_blinkin.c_lightSet(0.71), m_blinkin));
+    // new POVButton(m_driverController, 180).onTrue(new RunCommand(()-> m_blinkin.c_lightSet(0.75), m_blinkin));
+    // new POVButton(m_driverController, 270).onTrue(new RunCommand(()-> m_blinkin.c_lightSet(0.77), m_blinkin));
+
     new JoystickButton(m_driverController, 1).onTrue(new RunCommand(()-> m_rotator.c_rotatorToSetpoint(1.5), m_rotator));
     new POVButton(m_driverController, 90).onTrue(new RunCommand(()-> m_rotator.c_rotatorToSetpoint(-5), m_rotator));
     new POVButton(m_driverController, 0).onTrue(new RunCommand(()-> m_rotator.c_rotatorToSetpoint(-10), m_rotator));
@@ -140,8 +156,11 @@ public class RobotContainer {
     new JoystickButton(m_driverController, OIConstants.kLeftBumper).whileTrue(new RunCommand(() -> m_transfer.c_runTransfer(0.5), m_transfer));
     new JoystickButton(m_driverController, OIConstants.kLeftBumper).whileFalse(new RunCommand(() -> m_transfer.c_runTransfer(0), m_transfer));
 
-    new JoystickButton(m_driverController, 8).whileTrue(new RunCommand(() -> m_transfer.c_runTransfer(-0.2), m_transfer));
-    new JoystickButton(m_driverController, 8).whileFalse(new RunCommand(() -> m_transfer.c_runTransfer(0), m_transfer));
+    // new JoystickButton(m_driverController, OIConstants.kLeftBumper).whileTrue(new RunCommand(() -> m_blinkin.c_lightSet(-0.31), m_blinkin));
+    // new JoystickButton(m_driverController, OIConstants.kLeftBumper).whileFalse(new RunCommand(() -> m_blinkin.c_lightSet(0.77), m_blinkin));
+
+    new JoystickButton(m_driverController, 4).whileTrue(new RunCommand(() -> m_transfer.c_runTransfer(-0.2), m_transfer));
+    new JoystickButton(m_driverController, 4).whileFalse(new RunCommand(() -> m_transfer.c_runTransfer(0), m_transfer));
    new JoystickButton(m_driverController, 10)
         .whileTrue(new RunCommand(
             () -> m_robotDrive.setX(),  
@@ -163,6 +182,7 @@ new JoystickButton(m_driverController, 4).whileFalse(new RunCommand(() -> m_inta
     // new JoystickButton(m_driverController, OIConstants.kSquareButton).whileFalse(new RunCommand(() -> m_rotator.c_rotJog(0), m_rotator));
     new JoystickButton(m_driverController, 7).onTrue(new RunCommand(() -> m_robotDrive.zeroHeading(), m_robotDrive));
     
+
 
   // ####### NOT FINISHED - AMP TOGGLE BUTTON ######
   // boolean toggle = false;

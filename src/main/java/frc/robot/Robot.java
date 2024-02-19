@@ -6,18 +6,25 @@ package frc.robot;
 
 import com.revrobotics.CANSparkFlex;
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.ColorMatch;
+import com.revrobotics.ColorMatchResult;
+import com.revrobotics.ColorSensorV3;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkPIDController;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import edu.wpi.first.wpilibj2.command.RunCommand;
 import frc.robot.Constants.OIConstants;
+import frc.robot.subsystems.Blinkin;
 
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkPIDController;
@@ -31,9 +38,23 @@ import com.revrobotics.CANSparkLowLevel.MotorType;
  */
 public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
+  private Blinkin m_blinkin;
 
 XboxController m_driverController = new XboxController(OIConstants.kDriverControllerPort);
   private RobotContainer m_robotContainer;
+
+private final I2C.Port i2cPort = I2C.Port.kOnboard;
+  private final ColorSensorV3 m_colorSensor = new ColorSensorV3(i2cPort);
+  private final ColorMatch m_colorMatcher = new ColorMatch();
+  
+
+  private final Color kBlueTarget = new Color(0.143, 0.427, 0.429);
+  private final Color kGreenTarget = new Color(0.197, 0.561, 0.240);
+  private final Color kRedTarget = new Color(0.561, 0.232, 0.114);
+  private final Color kYellowTarget = new Color(0.361, 0.524, 0.113);
+
+  private final Color kOrangeTarget = new Color(0.552, 0.369, 0.078);
+  private final Color kOrangePolyTarget = new Color(0.428, 0.416, 0.156);
 
 
   // private static final int deviceID = 20;
@@ -51,6 +72,12 @@ XboxController m_driverController = new XboxController(OIConstants.kDriverContro
     DataLogManager.start();
 
     DriverStation.startDataLog(DataLogManager.getLog());
+
+    m_colorMatcher.addColorMatch(kBlueTarget);
+    m_colorMatcher.addColorMatch(kGreenTarget);
+    m_colorMatcher.addColorMatch(kRedTarget);
+     m_colorMatcher.addColorMatch(kOrangeTarget);  
+     m_colorMatcher.addColorMatch(kOrangePolyTarget);
 
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
@@ -151,6 +178,55 @@ XboxController m_driverController = new XboxController(OIConstants.kDriverContro
     final double Rtrigger = m_driverController.getRawAxis(3);
     Constants.MyConstants.ktriggerR = Rtrigger;
     CommandScheduler.getInstance().run();
+
+ 
+
+    //COLOR SENSOR
+     /**
+     * The method GetColor() returns a normalized color value from the sensor and can be
+     * useful if outputting the color to an RGB LED or similar. To
+     * read the raw color, use GetRawColor().
+     * 
+     * The color sensor works best when within a few inches from an object in
+     * well lit conditions (the built in LED is a big help here!). The farther
+     * an object is the more light from the surroundings will bleed into the 
+     * measurements and make it difficult to accurately determine its color.
+     */
+    Color detectedColor = m_colorSensor.getColor();
+
+    /**
+     * Run the color match algorithm on our detected color
+     */
+    String colorString;
+    ColorMatchResult match = m_colorMatcher.matchClosestColor(detectedColor);
+
+    // if (match.color == kBlueTarget) {
+    //   colorString = "Blue";
+    // } else if (match.color == kRedTarget) {
+    //   colorString = "Red";
+    // } else if (match.color == kGreenTarget) {
+    //   colorString = "Green";
+    // } else 
+    if (match.color == kOrangeTarget) {
+      colorString = "ORANGE";
+    } else if (match.color == kOrangePolyTarget) {
+    colorString = "ORANGE THRU POLY";
+    } else {
+      colorString = "Unknown";
+    }
+
+    Constants.MyConstants.colorSensed = colorString;
+    /**
+     * Open Smart Dashboard or Shuffleboard to see the color detected by the 
+     * sensor.
+     */
+    SmartDashboard.putNumber("Red", detectedColor.red);
+    SmartDashboard.putNumber("Green", detectedColor.green);
+    SmartDashboard.putNumber("Blue", detectedColor.blue);
+    SmartDashboard.putNumber("Confidence", match.confidence);
+    SmartDashboard.putString("Detected Color", colorString);
+
+
   }
 
   /** This function is called once each time the robot enters Disabled mode. */
