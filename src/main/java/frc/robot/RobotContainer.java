@@ -63,6 +63,7 @@ public class RobotContainer {
   private final Rotator m_rotator = new Rotator();
   private final Blinkin m_blinkin = new Blinkin();
 
+
   private final SendableChooser<Command> autoChooser;
 
   XboxController m_driverController = new XboxController(OIConstants.kDriverControllerPort);
@@ -71,6 +72,10 @@ public class RobotContainer {
 
   public RobotContainer() {
 
+  NamedCommands.registerCommand("RunIntake", m_intake.c_intakeRun(0.75));
+  NamedCommands.registerCommand("StartFlywheels", m_shooter.c_startFlywheel(0.9,0.792));
+  NamedCommands.registerCommand("FeedShooter", m_transfer.c_runTransfer(0.5));
+     
   autoChooser = AutoBuilder.buildAutoChooser();
 
   SmartDashboard.putData("Auto Chooser 6175", autoChooser);
@@ -110,10 +115,6 @@ public class RobotContainer {
 
     m_blinkin.setDefaultCommand(new RunCommand(()-> m_blinkin.c_shooterBlinkin(), m_blinkin));
   
-        // NamedCommands.registerCommand("RunIntake", m_intake.c_intakeRun(0.75));
-        // NamedCommands.registerCommand("StartFlywheels", m_shooter.c_startFlywheel(0.9,0.792));
-        // NamedCommands.registerCommand("FeedShooter", m_transfer.c_runTransfer(0.5));
-
       }
 
     

@@ -69,9 +69,9 @@ private final I2C.Port i2cPort = I2C.Port.kOnboard;
   @Override
   public void robotInit() {
 
-    DataLogManager.start();
+    // DataLogManager.start();
 
-    DriverStation.startDataLog(DataLogManager.getLog());
+    // DriverStation.startDataLog(DataLogManager.getLog());
 
     m_colorMatcher.addColorMatch(kBlueTarget);
     m_colorMatcher.addColorMatch(kGreenTarget);

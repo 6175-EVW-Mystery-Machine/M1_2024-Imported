@@ -15,7 +15,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Rotator extends SubsystemBase {
 
-  private CANSparkMax m_motor;
+  private CANSparkFlex m_motor;
   private SparkPIDController m_pidController;
   private RelativeEncoder m_encoder;
   public double kP, kI, kD, kIz, kFF, kMaxOutput, kMinOutput;
@@ -24,7 +24,7 @@ public class Rotator extends SubsystemBase {
 public Rotator() {
 
     // initialize motor
-    m_motor = new CANSparkMax(Constants.MyConstants.kRotatorCAN, MotorType.kBrushless);
+    m_motor = new CANSparkFlex(Constants.MyConstants.kRotatorCAN, MotorType.kBrushless);
 
     /**
      * The restoreFactoryDefaults method can be used to reset the configuration parameters
