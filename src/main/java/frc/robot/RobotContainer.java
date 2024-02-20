@@ -39,6 +39,7 @@ import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Sweeper;
 import frc.robot.subsystems.Transfer;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
@@ -72,9 +73,8 @@ public class RobotContainer {
 
   public RobotContainer() {
 
-  NamedCommands.registerCommand("RunIntake", m_intake.c_intakeRun(0.75));
-  NamedCommands.registerCommand("StartFlywheels", m_shooter.c_startFlywheel(0.9,0.792));
-  NamedCommands.registerCommand("FeedShooter", m_transfer.c_runTransfer(0.5));
+ NamedCommands.registerCommand("StartFlywheels", m_shooter.c_startFlywheel(0.2, 0.2));
+ 
      
   autoChooser = AutoBuilder.buildAutoChooser();
 
