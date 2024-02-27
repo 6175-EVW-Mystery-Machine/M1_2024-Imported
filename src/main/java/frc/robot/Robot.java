@@ -13,9 +13,12 @@ import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkPIDController;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
+import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.I2C;
+import edu.wpi.first.wpilibj.PneumaticHub;
+import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -37,6 +40,9 @@ import com.revrobotics.CANSparkLowLevel.MotorType;
  * project.
  */
 public class Robot extends TimedRobot {
+
+  
+
   private Command m_autonomousCommand;
   private Blinkin m_blinkin;
 
@@ -56,6 +62,8 @@ private final I2C.Port i2cPort = I2C.Port.kOnboard;
   private final Color kOrangeTarget = new Color(0.552, 0.369, 0.078);
   private final Color kOrangePolyTarget = new Color(0.428, 0.416, 0.156);
 
+  // Compressor compress = new Compressor(PneumaticsModuleType.REVPH);
+
 
   // private static final int deviceID = 20;
   // private CANSparkFlex m_motor;
@@ -72,6 +80,9 @@ private final I2C.Port i2cPort = I2C.Port.kOnboard;
     // DataLogManager.start();
 
     // DriverStation.startDataLog(DataLogManager.getLog());
+
+
+    // compress.enableDigital();
 
     m_colorMatcher.addColorMatch(kBlueTarget);
     m_colorMatcher.addColorMatch(kGreenTarget);
@@ -168,15 +179,18 @@ private final I2C.Port i2cPort = I2C.Port.kOnboard;
    */
   @Override
   public void robotPeriodic() {
-    // Runs the Scheduler.  This is responsible for polling buttons, adding newly-scheduled
-    // commands, running already-scheduled commands, removing finished or interrupted commands,
-    // and running subsystem periodic() methods.  This must be called from the robot's periodic
-    // block in order for anything in the Command-based framework to work.
+
+    // m_ph.enableCompressorDigital();
+    
     final double Ltrigger = m_driverController.getRawAxis(2);
     Constants.MyConstants.ktriggerL = Ltrigger;
 
     final double Rtrigger = m_driverController.getRawAxis(3);
     Constants.MyConstants.ktriggerR = Rtrigger;
+    // Runs the Scheduler.  This is responsible for polling buttons, adding newly-scheduled
+    // commands, running already-scheduled commands, removing finished or interrupted commands,
+    // and running subsystem periodic() methods.  This must be called from the robot's periodic
+    // block in order for anything in the Command-based framework to work.
     CommandScheduler.getInstance().run();
 
  
@@ -192,39 +206,39 @@ private final I2C.Port i2cPort = I2C.Port.kOnboard;
      * an object is the more light from the surroundings will bleed into the 
      * measurements and make it difficult to accurately determine its color.
      */
-    Color detectedColor = m_colorSensor.getColor();
+    // Color detectedColor = m_colorSensor.getColor();
 
-    /**
-     * Run the color match algorithm on our detected color
-     */
-    String colorString;
-    ColorMatchResult match = m_colorMatcher.matchClosestColor(detectedColor);
+    // /**
+    //  * Run the color match algorithm on our detected color
+    //  */
+    // String colorString;
+    // ColorMatchResult match = m_colorMatcher.matchClosestColor(detectedColor);
 
-    // if (match.color == kBlueTarget) {
-    //   colorString = "Blue";
-    // } else if (match.color == kRedTarget) {
-    //   colorString = "Red";
-    // } else if (match.color == kGreenTarget) {
-    //   colorString = "Green";
-    // } else 
-    if (match.color == kOrangeTarget) {
-      colorString = "ORANGE";
-    } else if (match.color == kOrangePolyTarget) {
-    colorString = "ORANGE THRU POLY";
-    } else {
-      colorString = "Unknown";
-    }
+    // // if (match.color == kBlueTarget) {
+    // //   colorString = "Blue";
+    // // } else if (match.color == kRedTarget) {
+    // //   colorString = "Red";
+    // // } else if (match.color == kGreenTarget) {
+    // //   colorString = "Green";
+    // // } else 
+    // if (match.color == kOrangeTarget) {
+    //   colorString = "ORANGE";
+    // } else if (match.color == kOrangePolyTarget) {
+    // colorString = "ORANGE THRU POLY";
+    // } else {
+    //   colorString = "Unknown";
+    // }
 
-    Constants.MyConstants.colorSensed = colorString;
-    /**
-     * Open Smart Dashboard or Shuffleboard to see the color detected by the 
-     * sensor.
-     */
-    SmartDashboard.putNumber("Red", detectedColor.red);
-    SmartDashboard.putNumber("Green", detectedColor.green);
-    SmartDashboard.putNumber("Blue", detectedColor.blue);
-    SmartDashboard.putNumber("Confidence", match.confidence);
-    SmartDashboard.putString("Detected Color", colorString);
+    // Constants.MyConstants.colorSensed = colorString;
+    // /**
+    //  * Open Smart Dashboard or Shuffleboard to see the color detected by the 
+    //  * sensor.
+    //  */
+    // SmartDashboard.putNumber("Red", detectedColor.red);
+    // SmartDashboard.putNumber("Green", detectedColor.green);
+    // SmartDashboard.putNumber("Blue", detectedColor.blue);
+    // SmartDashboard.putNumber("Confidence", match.confidence);
+    // SmartDashboard.putString("Detected Color", colorString);
 
 
   }

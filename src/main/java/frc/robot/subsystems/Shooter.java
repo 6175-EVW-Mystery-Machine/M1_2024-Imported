@@ -7,6 +7,7 @@ import com.revrobotics.CANSparkLowLevel.MotorType;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.XboxController.Axis;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
@@ -40,10 +41,19 @@ public class Shooter extends SubsystemBase {
   }
 
   //MY METHODS - IDK WHAT ITS ACTUALLY CALLED
-  public Command c_startFlywheel(double rSpeed, double lSpeed) {
+  public Command c_startFlywheelAuto(double rSpeed, double lSpeed) {
+    
+    return new InstantCommand(() -> {
     m_shooterLeft.set(lSpeed);
     m_shooterRight.set(rSpeed);
-    return null;
+    }, this);
+  }
+
+  public void c_startFlywheel(double rSpeed, double lSpeed) {
+    
+    m_shooterLeft.set(lSpeed);
+    m_shooterRight.set(rSpeed);
+
   }
 
   public void c_stopFlywheel() {

@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Intake extends SubsystemBase {
@@ -19,7 +20,7 @@ public class Intake extends SubsystemBase {
   
   public Intake() {
     m_intakeDriver = new CANSparkMax(Constants.MyConstants.kIntakeCAN, MotorType.kBrushless);
-    m_intakeExtension = new DoubleSolenoid(PneumaticsModuleType.REVPH, 1, 2);
+    m_intakeExtension = new DoubleSolenoid(PneumaticsModuleType.REVPH, 3, 4);
   }
 
   @Override
@@ -27,9 +28,13 @@ public class Intake extends SubsystemBase {
   
   }
 
-  public Command c_intakeRun(double speed) {
+  public Command c_intakeRunAuto(double speed) {
+    
+    return new InstantCommand(() -> m_intakeDriver.set(speed), this);
+  }
+
+   public void c_intakeRun(double speed) {
     m_intakeDriver.set(speed);
-    return null;
   }
 
 
