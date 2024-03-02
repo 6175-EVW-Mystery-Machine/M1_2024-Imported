@@ -16,6 +16,7 @@ import com.revrobotics.CANSparkLowLevel.MotorType;
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.PneumaticHub;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
@@ -52,7 +53,9 @@ XboxController m_driverController = new XboxController(OIConstants.kDriverContro
 private final I2C.Port i2cPort = I2C.Port.kOnboard;
   private final ColorSensorV3 m_colorSensor = new ColorSensorV3(i2cPort);
   private final ColorMatch m_colorMatcher = new ColorMatch();
-  
+
+  private Encoder m_encoder = new Encoder(0, 1);
+
 
   private final Color kBlueTarget = new Color(0.143, 0.427, 0.429);
   private final Color kGreenTarget = new Color(0.197, 0.561, 0.240);
@@ -81,6 +84,7 @@ private final I2C.Port i2cPort = I2C.Port.kOnboard;
 
     // DriverStation.startDataLog(DataLogManager.getLog());
 
+    m_encoder.reset();
 
     // compress.enableDigital();
 
@@ -181,6 +185,7 @@ private final I2C.Port i2cPort = I2C.Port.kOnboard;
   public void robotPeriodic() {
 
     // m_ph.enableCompressorDigital();
+   
     
     final double Ltrigger = m_driverController.getRawAxis(2);
     Constants.MyConstants.ktriggerL = Ltrigger;

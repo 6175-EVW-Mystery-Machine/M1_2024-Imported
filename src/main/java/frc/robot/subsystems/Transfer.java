@@ -33,4 +33,12 @@ public class Transfer extends SubsystemBase {
   public Command c_runTransferAuto(double speed) {
   return new InstantCommand(() -> m_transfer.set(speed), this);
   }
+
+  public void c_startTransferAxis(double axis, double speed) {
+    if (axis >= 0.5) {
+    m_transfer.set(speed);
+    } else {
+    m_transfer.set(0);
+    }
+  }
 }

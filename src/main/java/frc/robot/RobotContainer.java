@@ -37,6 +37,7 @@ import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Rotator;
+import frc.robot.subsystems.RotatorAbsolute;
 import frc.robot.subsystems.RotatorJog;
 import frc.robot.subsystems.Shooter;
 // import frc.robot.subsystems.Sweeper;
@@ -68,6 +69,7 @@ public class RobotContainer {
   private final Blinkin m_blinkin = new Blinkin();
   private final Elevator m_elevator = new Elevator();
 private final Compressor m_compressor = new Compressor(PneumaticsModuleType.REVPH);
+private final RotatorAbsolute m_RotatorAbsolute = new RotatorAbsolute();
 
   private final SendableChooser<Command> autoChooser;
 
@@ -115,15 +117,13 @@ private final Compressor m_compressor = new Compressor(PneumaticsModuleType.REVP
             m_robotDrive));
 
     m_transfer.setDefaultCommand(
-        new RunCommand(
-            () -> m_transfer.c_runTransfer(0), m_transfer));
+            new RunCommand(() -> m_transfer.c_startTransferAxis(Constants.MyConstants.ktriggerR, -0.2), m_transfer));
 
-    m_intake.setDefaultCommand(
-        new RunCommand(() -> m_intake.c_intakeControl(0, false), m_intake));
-
-    m_rotJog.setDefaultCommand(
-        new RunCommand(
-            () -> m_rotJog.c_rotJog(0), m_rotJog));
+    m_intake.setDefaultCommand(new RunCommand(() -> m_intake.c_startIntakeAxis(Constants.MyConstants.ktriggerR, 0.5), m_intake));
+    
+    // m_rotator.setDefaultCommand(
+    //     new RunCommand(
+    //         () -> m_rotator.c_rotJog(0), m_rotator));
 
     // m_sweeper.setDefaultCommand(
     //     new RunCommand(() -> m_sweeper.c_controlSweeperAxis(Constants.MyConstants.ktriggerR, -0.5, true), m_sweeper));
@@ -142,7 +142,7 @@ private final Compressor m_compressor = new Compressor(PneumaticsModuleType.REVP
     new JoystickButton(m_driverController, 6).onTrue(new RunCommand(() -> m_blinkin.c_intakeBlinkin(), m_blinkin));
     new JoystickButton(m_driverController, 6).onFalse(new RunCommand(() -> m_blinkin.c_shooterBlinkin(), m_blinkin));
     new JoystickButton(m_driverController, 2).whileTrue(new RunCommand(() -> m_blinkin.c_sourceBlinkin(), m_blinkin));
-    new JoystickButton(m_driverController, 8).whileTrue(new RunCommand(() -> m_blinkin.c_floorBlinkin(), m_blinkin));
+    // new JoystickButton(m_driverController, 8).whileTrue(new RunCommand(() -> m_blinkin.c_floorBlinkin(), m_blinkin));
     new JoystickButton(m_driverController, 3).whileTrue(new RunCommand(() -> m_blinkin.c_ampBlinkin(), m_blinkin));
     // new POVButton(m_driverController, 90).onTrue(new RunCommand(()->
     // m_blinkin.c_lightSet(0.73), m_blinkin));
@@ -153,13 +153,18 @@ private final Compressor m_compressor = new Compressor(PneumaticsModuleType.REVP
     // new POVButton(m_driverController, 270).onTrue(new RunCommand(()->
     // m_blinkin.c_lightSet(0.77), m_blinkin));
 
+// new POVButton(m_driverController, 90).onTrue(new RunCommand(() -> m_rotator.c_rotJog(0.3), m_rotator));
+// new POVButton(m_driverController, 0).onTrue(new RunCommand(() -> m_rotator.c_rotJog(-0.3), m_rotator));
+
+new JoystickButton(m_driverController, 8).whileTrue(new RunCommand(() -> m_RotatorAbsolute.c_setMotorSpeed(-0.2), m_RotatorAbsolute));
+
     new JoystickButton(m_driverController, 1)
-        .onTrue(new RunCommand(() -> m_rotator.c_rotatorToSetpoint(1.5), m_rotator));
+        .onTrue(new RunCommand(() -> m_rotator.c_rotatorToSetpoint(0), m_rotator));
     new POVButton(m_driverController, 90).onTrue(new RunCommand(() -> m_rotator.c_rotatorToSetpoint(-7), m_rotator));
-    new POVButton(m_driverController, 0).onTrue(new RunCommand(() -> m_rotator.c_rotatorToSetpoint(-14.5), m_rotator));
-    new POVButton(m_driverController, 180).onTrue(new RunCommand(() -> m_rotator.c_rotatorToSetpoint(-16), m_rotator));
+    new POVButton(m_driverController, 0).onTrue(new RunCommand(() -> m_rotator.c_rotatorToSetpoint(-30), m_rotator));
+    new POVButton(m_driverController, 180).onTrue(new RunCommand(() -> m_rotator.c_rotatorToSetpoint(-40), m_rotator));
     new POVButton(m_driverController, 270)
-        .onTrue(new RunCommand(() -> m_rotator.c_rotatorToSetpoint(-15.25), m_rotator));
+        .onTrue(new RunCommand(() -> m_rotator.c_rotatorToSetpoint(2), m_rotator));
 
     new JoystickButton(m_driverController, 3).whileTrue(new RunCommand(() -> m_elevator.c_elevatorUp(), m_elevator));
     new JoystickButton(m_driverController, 3).whileFalse(new RunCommand(() -> m_elevator.c_elevatorDown(), m_elevator));
@@ -180,14 +185,17 @@ private final Compressor m_compressor = new Compressor(PneumaticsModuleType.REVP
             -MathUtil.applyDeadband((m_driverController.getRightX()) * 0.6, OIConstants.kDriveDeadband),
             true, true),
         m_robotDrive));
-    new JoystickButton(m_driverController, OIConstants.kRightTrigger)
-        .whileTrue(new RunCommand(() -> m_transfer.c_runTransfer(0.5), m_transfer));
-    new JoystickButton(m_driverController, OIConstants.kRightTrigger)
-        .whileFalse(new RunCommand(() -> m_transfer.c_runTransfer(0), m_transfer));
+    // new JoystickButton(m_driverController, OIConstants.kRightTrigger)
+    //     .whileTrue(new RunCommand(() -> m_transfer.c_runTransfer(-0.2), m_transfer));
+    // new JoystickButton(m_driverController, OIConstants.kRightTrigger)
+    //     .whileFalse(new RunCommand(() -> m_transfer.c_runTransfer(0), m_transfer));
+    // new JoystickButton(m_driverController, 4).whileTrue(new RunCommand(() -> m_intake.c_intakeRun(0.5), m_intake));
+    // new JoystickButton(m_driverController, 4).whileFalse(new RunCommand(() -> m_intake.c_intakeRun(0), m_intake));
+
     new JoystickButton(m_driverController, OIConstants.kLeftBumper)
         .whileTrue(new RunCommand(() -> m_transfer.c_runTransfer(0.5), m_transfer));
     new JoystickButton(m_driverController, OIConstants.kLeftBumper)
-        .whileFalse(new RunCommand(() -> m_transfer.c_runTransfer(0), m_transfer));
+        .whileFalse(new RunCommand(() -> m_transfer.c_startTransferAxis(Constants.MyConstants.ktriggerR, -0.2), m_transfer));
 
     // new JoystickButton(m_driverController, OIConstants.kLeftBumper).whileTrue(new
     // RunCommand(() -> m_blinkin.c_lightSet(-0.31), m_blinkin));
@@ -197,19 +205,19 @@ private final Compressor m_compressor = new Compressor(PneumaticsModuleType.REVP
 
     new JoystickButton(m_driverController, 4)
         .whileTrue(new RunCommand(() -> m_transfer.c_runTransfer(-0.2), m_transfer));
-    new JoystickButton(m_driverController, 4).whileFalse(new RunCommand(() -> m_transfer.c_runTransfer(0), m_transfer));
+    new JoystickButton(m_driverController, 4).whileFalse(new RunCommand(() -> m_transfer.c_startTransferAxis(Constants.MyConstants.ktriggerR, -0.2), m_transfer));
     new JoystickButton(m_driverController, 10)
         .whileTrue(new RunCommand(
             () -> m_robotDrive.setX(),
             m_robotDrive));
     new JoystickButton(m_driverController, 4).whileTrue(new RunCommand(() -> m_intake.c_intakeRun(0.5), m_intake));
-    new JoystickButton(m_driverController, 4).whileFalse(new RunCommand(() -> m_intake.c_intakeRun(0), m_intake));
+    new JoystickButton(m_driverController, 4).whileFalse(new RunCommand(() -> m_intake.c_startIntakeAxis(Constants.MyConstants.ktriggerR, 0.5), m_intake));
 
     new JoystickButton(m_driverController, 6).whileTrue(new RunCommand(() -> m_intake.c_intakeRun(-0.75), m_intake));
-    new JoystickButton(m_driverController, 6).whileFalse(new RunCommand(() -> m_intake.c_intakeRun(0), m_intake));
+    new JoystickButton(m_driverController, 6).whileFalse(new RunCommand(() -> m_intake.c_startIntakeAxis(Constants.MyConstants.ktriggerR, 0.5), m_intake));
     new JoystickButton(m_driverController, 6)
         .whileTrue(new RunCommand(() -> m_transfer.c_runTransfer(0.75), m_transfer));
-    new JoystickButton(m_driverController, 6).whileFalse(new RunCommand(() -> m_transfer.c_runTransfer(0), m_transfer));
+    new JoystickButton(m_driverController, 6).whileFalse(new RunCommand(() -> m_transfer.c_startTransferAxis(Constants.MyConstants.ktriggerR, -0.2), m_transfer));
     new JoystickButton(m_driverController, 6)
         .whileTrue(new RunCommand(() -> m_shooter.c_startFlywheel(-0.2, -0.2), m_shooter));
     new JoystickButton(m_driverController, 2)

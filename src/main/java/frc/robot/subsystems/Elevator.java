@@ -6,6 +6,7 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
+import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
@@ -15,18 +16,22 @@ public class Elevator extends SubsystemBase {
 
   public Elevator() {
 
-    m_elevatorDoubleSolenoid = new DoubleSolenoid(PneumaticsModuleType.REVPH, 6, 7);
+    m_elevatorDoubleSolenoid = new DoubleSolenoid(7, PneumaticsModuleType.REVPH, 6, 7);
 
-  }
+
+    m_elevatorDoubleSolenoid.set(DoubleSolenoid.Value.kReverse);
+
+}
+  
 
   @Override
   public void periodic() {}
 
   public void c_elevatorUp() {
-    m_elevatorDoubleSolenoid.set(Value.kForward);
+    m_elevatorDoubleSolenoid.set(DoubleSolenoid.Value.kForward);
   }
 
    public void c_elevatorDown() {
-    m_elevatorDoubleSolenoid.set(Value.kReverse);
+    m_elevatorDoubleSolenoid.set(DoubleSolenoid.Value.kReverse);
   }
 }
