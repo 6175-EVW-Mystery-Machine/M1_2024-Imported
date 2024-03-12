@@ -13,6 +13,7 @@ import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkPIDController;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
+import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.DriverStation;
@@ -83,6 +84,8 @@ private final I2C.Port i2cPort = I2C.Port.kOnboard;
     // DataLogManager.start();
 
     // DriverStation.startDataLog(DataLogManager.getLog());
+
+    CameraServer.startAutomaticCapture();
 
     m_encoder.reset();
 

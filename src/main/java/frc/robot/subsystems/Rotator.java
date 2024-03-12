@@ -24,7 +24,7 @@ public class Rotator extends SubsystemBase {
 public Rotator() {
 
     // initialize motor
-    m_motor = new CANSparkFlex(40, MotorType.kBrushless);
+    m_motor = new CANSparkFlex(43, MotorType.kBrushless);
 
     /**
      * The restoreFactoryDefaults method can be used to reset the configuration parameters

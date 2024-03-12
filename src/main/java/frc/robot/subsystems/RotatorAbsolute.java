@@ -21,15 +21,15 @@ public class RotatorAbsolute extends SubsystemBase {
   private SparkPIDController m_pidController;
   private RelativeEncoder m_encoder;
   public double kP, kI, kD, kIz, kFF, kMaxOutput, kMinOutput;
-  DigitalInput toplimitSwitch = new DigitalInput(3);
-  DigitalInput bottomlimitSwitch = new DigitalInput(4);
+  DigitalInput toplimitSwitch = new DigitalInput(6);
+  DigitalInput bottomlimitSwitch = new DigitalInput(7);
 
 
 public RotatorAbsolute() {
 
     // initialize motor
-    m_motor = new CANSparkFlex(Constants.MyConstants.kRotatorCAN, MotorType.kBrushless);
-    
+    // m_motor = new CANSparkFlex(Constants.MyConstants.kRotatorCAN, MotorType.kBrushless);
+    m_motor = new CANSparkFlex(42, MotorType.kBrushless);
 
     /**
      * The restoreFactoryDefaults method can be used to reset the configuration parameters
@@ -125,14 +125,15 @@ public void c_setMotorSpeed(double speed) {
             // We are going up but top limit is not tripped so go at commanded speed
             m_motor.set(speed);
         }
-    } else {
-        if (bottomlimitSwitch.get()) {
-            // We are going down and bottom limit is tripped so stop
-            m_motor.set(0);
-        } else {
-            // We are going down but bottom limit is not tripped so go at commanded speed
-            m_motor.set(speed);
-        }
-    }
+    } 
+    // else {
+    //     if (bottomlimitSwitch.get()) {
+    //         // We are going down and bottom limit is tripped so stop
+    //         m_motor.set(0);
+    //     } else {
+    //         // We are going down but bottom limit is not tripped so go at commanded speed
+    //         m_motor.set(speed);
+    //     }
+    // }
 }
 }

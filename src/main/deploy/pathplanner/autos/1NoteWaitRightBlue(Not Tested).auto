@@ -1,0 +1,80 @@
+{
+  "version": 1.0,
+  "startingPose": {
+    "position": {
+      "x": 0.82,
+      "y": 4.26
+    },
+    "rotation": -59.58147403874227
+  },
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "named",
+          "data": {
+            "name": "AutoRotDown"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "AutoStartFlywheels"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 1.0
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "AutoStartTransfer"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 5.0
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "7.1"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "AutoIntakeTest"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "AutoTranTest"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "AutoShooterTest"
+                }
+              }
+            ]
+          }
+        }
+      ]
+    }
+  },
+  "folder": null,
+  "choreoAuto": false
+}
