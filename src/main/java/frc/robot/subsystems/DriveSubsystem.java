@@ -6,6 +6,7 @@ import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
 import com.pathplanner.lib.util.PIDConstants;
 import com.pathplanner.lib.util.ReplanningConfig;
 
+import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -19,7 +20,10 @@ import edu.wpi.first.util.WPIUtilJNI;
 //CHANGE GYRO IMPORTS
 import edu.wpi.first.wpilibj.ADIS16470_IMU;
 import edu.wpi.first.wpilibj.ADIS16470_IMU.IMUAxis;
+import edu.wpi.first.wpilibj.smartdashboard.Field2d;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.DriverStation;
+import frc.robot.LimelightHelpers;
 import frc.robot.Constants.DriveConstants;
 import frc.utils.*;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -58,8 +62,11 @@ public class DriveSubsystem extends SubsystemBase {
   private SlewRateLimiter m_rotLimiter = new SlewRateLimiter(DriveConstants.kRotationalSlewRate);
   private double m_prevTime = WPIUtilJNI.now() * 1e-6;
 
+  private final Field2d m_field = new Field2d();
+ 
+
   // Odometry class for tracking robot pose
-  SwerveDriveOdometry m_odometry = new SwerveDriveOdometry(
+  SwerveDrivePoseEstimator m_odometry = new SwerveDrivePoseEstimator(
       DriveConstants.kDriveKinematics,
       m_gyro.getRotation2d(),
       new SwerveModulePosition[] {
@@ -67,13 +74,18 @@ public class DriveSubsystem extends SubsystemBase {
           m_frontRight.getPosition(),
           m_rearLeft.getPosition(),
           m_rearRight.getPosition()
-      });
+      },
+      
+      new Pose2d());
+  
 
   
   /** Creates a new DriveSubsystem. */
   public DriveSubsystem() {
 
-    // //################ PATH PLANNER WORKING ON ################
+
+  
+      // //################ PATH PLANNER WORKING ON ################
         AutoBuilder.configureHolonomic(
             this::getPose, // Robot pose supplier
             this::resetOdometry, // Method to reset odometry (will be called if your auto has a starting pose)
@@ -100,11 +112,14 @@ public class DriveSubsystem extends SubsystemBase {
             this // Reference to this subsystem to set requirements
     );
     
-  
+            SmartDashboard.putData("Field", m_field);
+           
   }
 
   @Override
   public void periodic() {
+
+    
     // Update the odometry in the periodic block
     m_odometry.update(
       m_gyro.getRotation2d(),
@@ -114,6 +129,14 @@ public class DriveSubsystem extends SubsystemBase {
             m_rearLeft.getPosition(),
             m_rearRight.getPosition()
         });
+
+      var estimate = LimelightHelpers.getBotPoseEstimate_wpiBlue("");
+        if (estimate.tagCount > 0) {
+          m_odometry.addVisionMeasurement(estimate.pose, estimate.timestampSeconds);
+        }
+
+       m_field.setRobotPose(m_odometry.getEstimatedPosition());
+
   }
 
   /**
@@ -122,7 +145,7 @@ public class DriveSubsystem extends SubsystemBase {
    * @return The pose.
    */
   public Pose2d getPose() {
-    return m_odometry.getPoseMeters();
+    return m_odometry.getEstimatedPosition();
   }
 
   /**
@@ -300,4 +323,9 @@ public class DriveSubsystem extends SubsystemBase {
   public double getTurnRate() {
     return m_gyro.getRate() * (DriveConstants.kGyroReversed ? -1.0 : 1.0);
   }
+
+  public Pose2d getPose2d() {
+    return m_odometry.getEstimatedPosition();
+  }
+  
 }

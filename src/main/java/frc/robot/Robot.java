@@ -4,6 +4,8 @@
 
 package frc.robot;
 
+import java.util.List;
+
 import com.revrobotics.CANSparkFlex;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.ColorMatch;
@@ -14,6 +16,12 @@ import com.revrobotics.SparkPIDController;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
 import edu.wpi.first.cameraserver.CameraServer;
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.trajectory.TrajectoryConfig;
+import edu.wpi.first.math.trajectory.TrajectoryGenerator;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.DriverStation;
@@ -23,6 +31,7 @@ import edu.wpi.first.wpilibj.PneumaticHub;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -35,6 +44,8 @@ import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkPIDController;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkLowLevel.MotorType;
+
+
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
  * each mode, as described in the TimedRobot documentation. If you change the name of this class or
@@ -66,6 +77,9 @@ private final I2C.Port i2cPort = I2C.Port.kOnboard;
   private final Color kOrangeTarget = new Color(0.552, 0.369, 0.078);
   private final Color kOrangePolyTarget = new Color(0.428, 0.416, 0.156);
 
+  // private final Field2d m_field = new Field2d();
+
+  
   // Compressor compress = new Compressor(PneumaticsModuleType.REVPH);
 
 
@@ -83,9 +97,24 @@ private final I2C.Port i2cPort = I2C.Port.kOnboard;
 
     // DataLogManager.start();
 
-    // DriverStation.startDataLog(DataLogManager.getLog());
+    // SmartDashboard.putData("Field", m_field);
 
-    CameraServer.startAutomaticCapture();
+    // // DriverStation.startDataLog(DataLogManager.getLog());
+    // m_trajectory =
+    //   TrajectoryGenerator.generateTrajectory(
+    //     new Pose2d(0, 0, Rotation2d.fromDegrees(0)), 
+    //     List.of(new Translation2d(1, 1), new Translation2d(2, -1)),
+    //     new Pose2d(3, 0, Rotation2d.fromDegrees(0)),
+    //     new TrajectoryConfig(Units.feetToMeters(3.0), Units.feetToMeters(3.0)));
+
+    //     m_field = new Field2d();
+    //     SmartDashboard.putData(m_field);
+
+    //     m_field.getObject("traj").setTrajectory(m_trajectory);
+
+        
+
+    // CameraServer.startAutomaticCapture();
 
     m_encoder.reset();
 
@@ -188,7 +217,7 @@ private final I2C.Port i2cPort = I2C.Port.kOnboard;
   public void robotPeriodic() {
 
     // m_ph.enableCompressorDigital();
-   
+    // m_field.setRobotPose(m_odometry.getEstimatedPosition());
     
     final double Ltrigger = m_driverController.getRawAxis(2);
     Constants.MyConstants.ktriggerL = Ltrigger;
