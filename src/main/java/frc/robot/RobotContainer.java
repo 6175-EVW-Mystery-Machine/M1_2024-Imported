@@ -99,7 +99,7 @@ private final LimitSwitchTest m_LimitSwitchTest = new LimitSwitchTest();
     NamedCommands.registerCommand("AutoShooterTest",
     m_shooter.c_startFlywheelAuto(-0.1,-0.1));
     NamedCommands.registerCommand("AutoIntakeTest", m_intake.c_intakeRunAuto(-0.75));
-    NamedCommands.registerCommand("AutoRotDown", m_LimitSwitchTest.c_runRotAuto(0.05));
+    NamedCommands.registerCommand("AutoRotDown", m_LimitSwitchTest.c_runRotAuto(0.05).withTimeout(0.5));
     NamedCommands.registerCommand("AutoRotStop", m_LimitSwitchTest.c_runRotAuto(0));
 
     
@@ -117,7 +117,7 @@ private final LimitSwitchTest m_LimitSwitchTest = new LimitSwitchTest();
             () -> m_robotDrive.drive(
                 -MathUtil.applyDeadband((m_driverController.getLeftY()) * 0.60, OIConstants.kDriveDeadband),
                 -MathUtil.applyDeadband((m_driverController.getLeftX()) * 0.60, OIConstants.kDriveDeadband),
-                -MathUtil.applyDeadband((m_driverController.getRightX()) * 0.5, OIConstants.kDriveDeadband),
+                -MathUtil.applyDeadband((m_driverController.getRightX()) * 0.8, OIConstants.kDriveDeadband),
                 true, true),
             m_robotDrive));
 
@@ -209,14 +209,14 @@ private final LimitSwitchTest m_LimitSwitchTest = new LimitSwitchTest();
         () -> m_robotDrive.drive(
             -MathUtil.applyDeadband((m_driverController.getLeftY()), OIConstants.kDriveDeadband),
             -MathUtil.applyDeadband((m_driverController.getLeftX()), OIConstants.kDriveDeadband),
-            -MathUtil.applyDeadband((m_driverController.getRightX()) * 0.75, OIConstants.kDriveDeadband),
+            -MathUtil.applyDeadband((m_driverController.getRightX()), OIConstants.kDriveDeadband),
             true, true),
         m_robotDrive));
     new JoystickButton(m_driverController, 9).whileFalse(new RunCommand(
         () -> m_robotDrive.drive(
             -MathUtil.applyDeadband((m_driverController.getLeftY()) * 0.6, OIConstants.kDriveDeadband),
             -MathUtil.applyDeadband((m_driverController.getLeftX()) * 0.6, OIConstants.kDriveDeadband),
-            -MathUtil.applyDeadband((m_driverController.getRightX()) * 0.6, OIConstants.kDriveDeadband),
+            -MathUtil.applyDeadband((m_driverController.getRightX()) * 0.8, OIConstants.kDriveDeadband),
             true, true),
         m_robotDrive));
     // new JoystickButton(m_driverController, OIConstants.kRightTrigger)
