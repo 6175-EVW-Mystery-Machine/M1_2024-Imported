@@ -48,6 +48,6 @@ private final DriveSubsystem m_robotDrive;
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return Math.abs(m_error) < 3;
+    return Math.abs(m_error) < 2;
   }
 }
