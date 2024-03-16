@@ -31,6 +31,7 @@ import frc.robot.Constants.OIConstants;
 import frc.robot.commands.Amp;
 import frc.robot.commands.RunIntake;
 import frc.robot.commands.SetXDrive;
+import frc.robot.commands.ShootSpeaker;
 import frc.robot.commands.StartFlywheels;
 import frc.robot.subsystems.Blinkin;
 import frc.robot.subsystems.DriveSubsystem;
@@ -84,7 +85,6 @@ private final LimitSwitchTest m_LimitSwitchTest = new LimitSwitchTest();
     
     m_compressor.enableDigital();
 
-
     NamedCommands.registerCommand("AutoStartIntake", m_intake.c_intakeRunAuto(-0.75));
     NamedCommands.registerCommand("AutoStopIntake", m_intake.c_intakeRunAuto(0));
     NamedCommands.registerCommand("AutoStartFlywheels",
@@ -101,7 +101,7 @@ private final LimitSwitchTest m_LimitSwitchTest = new LimitSwitchTest();
     NamedCommands.registerCommand("AutoIntakeTest", m_intake.c_intakeRunAuto(-0.75));
     NamedCommands.registerCommand("AutoRotDown", m_LimitSwitchTest.c_runRotAuto(0.05).withTimeout(0.5));
     NamedCommands.registerCommand("AutoRotStop", m_LimitSwitchTest.c_runRotAuto(0));
-
+    NamedCommands.registerCommand("AutoAimSP", m_LimitSwitchTest.c_runRotAuto(0));
     
     m_robotDrive = new DriveSubsystem();
 
@@ -149,6 +149,8 @@ private final LimitSwitchTest m_LimitSwitchTest = new LimitSwitchTest();
     new JoystickButton(m_driverController, 2).whileTrue(new RunCommand(() -> m_blinkin.c_sourceBlinkin(), m_blinkin));
     // new JoystickButton(m_driverController, 8).whileTrue(new RunCommand(() -> m_blinkin.c_floorBlinkin(), m_blinkin));
     new JoystickButton(m_driverController, 3).whileTrue(new RunCommand(() -> m_blinkin.c_ampBlinkin(), m_blinkin));
+
+    new POVButton(m_driverController, 0).onTrue(new ShootSpeaker(m_robotDrive));
     // new POVButton(m_driverController, 90).onTrue(new RunCommand(()->
     // m_blinkin.c_lightSet(0.73), m_blinkin));
     // new POVButton(m_driverController, 0).onTrue(new RunCommand(()->
@@ -170,8 +172,8 @@ private final LimitSwitchTest m_LimitSwitchTest = new LimitSwitchTest();
     // new POVButton(m_driverController, 180).onTrue(new RunCommand(() -> m_rotator.c_rotatorToSetpoint(-40), m_rotator));
     // new POVButton(m_driverController, 270)
     //     .onTrue(new RunCommand(() -> m_rotator.c_rotatorToSetpoint(2), m_rotator));
-    new POVButton(m_driverController, 0).whileTrue(new RunCommand(() -> m_LimitSwitchTest.c_rotJog(-0.3), m_LimitSwitchTest));
-     new POVButton(m_driverController, 0).whileFalse(new RunCommand(() -> m_LimitSwitchTest.c_rotJog(0), m_LimitSwitchTest));
+    // new POVButton(m_driverController, 0).whileTrue(new RunCommand(() -> m_LimitSwitchTest.c_rotJog(-0.3), m_LimitSwitchTest));
+    //  new POVButton(m_driverController, 0).whileFalse(new RunCommand(() -> m_LimitSwitchTest.c_rotJog(0), m_LimitSwitchTest));
     new POVButton(m_driverController, 180).onTrue(new RunCommand(() -> {m_LimitSwitchTest.c_setMotorSpeed(0.2);  
     }, m_LimitSwitchTest));
      new POVButton(m_driverController, 180).whileFalse(new RunCommand(() -> m_LimitSwitchTest.c_rotJog(0), m_LimitSwitchTest));
