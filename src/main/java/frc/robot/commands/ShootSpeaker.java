@@ -15,9 +15,10 @@ private static final double GAIN = 1.0/90.0;
 private static double m_error = 360;
 
 
-private final DriveSubsystem m_robotDrive = new DriveSubsystem();
+private final DriveSubsystem m_robotDrive;
 
-  public ShootSpeaker() {
+  public ShootSpeaker(DriveSubsystem m_robotDrive) {
+    this.m_robotDrive = m_robotDrive;
     addRequirements(m_robotDrive);
   }
 
@@ -30,7 +31,8 @@ private final DriveSubsystem m_robotDrive = new DriveSubsystem();
   public void execute() {
      var alliance = DriverStation.getAlliance();  
       Translation2d currentTranslation = alliance.isPresent() && alliance.get() == DriverStation.Alliance.Red ? RED_SPEAKER : BLUE_SPEAKER;
-      Rotation2d targetAngle = currentTranslation.minus(m_robotDrive.getPose2d().getTranslation()).getAngle().plus(HALF);
+      // Rotation2d targetAngle = currentTranslation.minus(m_robotDrive.getPose2d().getTranslation()).getAngle().plus(HALF);
+       Rotation2d targetAngle = currentTranslation.minus(m_robotDrive.getPose2d().getTranslation()).getAngle();
       Rotation2d error = targetAngle.minus(m_robotDrive.getPose2d().getRotation());
       m_error = error.getDegrees();
 

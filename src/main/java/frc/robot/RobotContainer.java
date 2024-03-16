@@ -150,7 +150,7 @@ private final LimitSwitchTest m_LimitSwitchTest = new LimitSwitchTest();
     // new JoystickButton(m_driverController, 8).whileTrue(new RunCommand(() -> m_blinkin.c_floorBlinkin(), m_blinkin));
     new JoystickButton(m_driverController, 3).whileTrue(new RunCommand(() -> m_blinkin.c_ampBlinkin(), m_blinkin));
 
-    new POVButton(m_driverController, 0).onTrue(new ShootSpeaker());
+    new POVButton(m_driverController, 0).onTrue(new ShootSpeaker(m_robotDrive));
     // new POVButton(m_driverController, 90).onTrue(new RunCommand(()->
     // m_blinkin.c_lightSet(0.73), m_blinkin));
     // new POVButton(m_driverController, 0).onTrue(new RunCommand(()->
