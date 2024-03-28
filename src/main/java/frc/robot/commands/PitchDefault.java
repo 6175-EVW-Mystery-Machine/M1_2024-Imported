@@ -2,21 +2,18 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-
-//DEAD COMMAND
-
-
 package frc.robot.commands;
 
-import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.Constants.OIConstants;
-import frc.robot.subsystems.DriveSubsystem;
+import frc.robot.subsystems.ShooterPitch;
 
-public class DriveBackward extends Command {
-  DriveSubsystem m_drive = new DriveSubsystem();
-  public DriveBackward() {
-    addRequirements(m_drive);
+public class PitchDefault extends Command {
+
+  private final ShooterPitch m_shooterPitch;
+
+  public PitchDefault(ShooterPitch m_shooterPitch) {
+    this.m_shooterPitch = m_shooterPitch;
+    addRequirements(m_shooterPitch);
   }
 
   // Called when the command is initially scheduled.
@@ -26,11 +23,7 @@ public class DriveBackward extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_drive.drive(
-                -MathUtil.applyDeadband((-0.2), OIConstants.kDriveDeadband),
-                -MathUtil.applyDeadband((0), OIConstants.kDriveDeadband),
-                -MathUtil.applyDeadband(0, OIConstants.kDriveDeadband),
-                true, true);
+    m_shooterPitch.RotToSP(0.5);
   }
 
   // Called once the command ends or is interrupted.

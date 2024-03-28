@@ -15,6 +15,9 @@ public final class Constants {
     public static final int kShooterLeftCAN = 11;
     public static final int kShooterRightCAN = 12;
     public static final int kTransferCAN = 14;
+
+    // <<<<< WILL CHANGE >>>>>
+    // Wait for new shooter
     public static final int kRotatorCAN = 10;
     public static final int kIntakeCAN = 15;
     public static final int kIntakeForwardChannel = 1;
@@ -57,10 +60,10 @@ public final class Constants {
     public static final double kBackRightChassisAngularOffset = Math.PI / 2;
 
     // SPARK MAX CAN IDs
-    public static final int kFrontLeftDrivingCanId = 26;
-    public static final int kRearLeftDrivingCanId = 2;
-    public static final int kFrontRightDrivingCanId = 3;
-    public static final int kRearRightDrivingCanId = 4;
+    public static final int kFrontLeftDrivingCanId = 22;
+    public static final int kRearLeftDrivingCanId = 29;
+    public static final int kFrontRightDrivingCanId = 23;
+    public static final int kRearRightDrivingCanId = 28;
 
     public static final int kFrontLeftTurningCanId = 5;
     public static final int kRearLeftTurningCanId = 6;

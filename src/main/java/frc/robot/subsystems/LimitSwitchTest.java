@@ -19,7 +19,7 @@ public class LimitSwitchTest extends SubsystemBase {
    private CANSparkFlex m_motor;
    DigitalInput toplimitSwitch = new DigitalInput(3);
   public LimitSwitchTest() {
-m_motor = new CANSparkFlex(10, MotorType.kBrushless);
+m_motor = new CANSparkFlex(80, MotorType.kBrushless);
 
 m_motor.restoreFactoryDefaults();
   }
