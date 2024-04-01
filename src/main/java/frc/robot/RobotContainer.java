@@ -29,6 +29,9 @@ import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.OIConstants;
 import frc.robot.commands.Amp;
+import frc.robot.commands.AutoIntake;
+import frc.robot.commands.AutoReadyShooter;
+import frc.robot.commands.HoardAuto;
 import frc.robot.commands.RunIntake;
 import frc.robot.commands.SetXDrive;
 import frc.robot.commands.ShootSpeaker;
@@ -55,6 +58,7 @@ import edu.wpi.first.wpilibj2.command.button.POVButton;
 import java.util.List;
 import java.util.Map;
 
+import com.fasterxml.jackson.core.sym.Name;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.commands.PathPlannerAuto;
@@ -90,10 +94,10 @@ private final ShooterPitch m_ShooterPitch = new ShooterPitch();
     NamedCommands.registerCommand("AutoStartIntake", m_intake.c_intakeRunAuto(-0.75));
     NamedCommands.registerCommand("AutoStopIntake", m_intake.c_intakeRunAuto(0));
     NamedCommands.registerCommand("AutoStartFlywheels",
-    m_shooter.c_startFlywheelAuto(0.9,0.9));
+    m_shooter.c_startFlywheelAuto(0.75,0.75));
     NamedCommands.registerCommand("AutoStopFlywheels",
     m_shooter.c_startFlywheelAuto(0,0));
-    NamedCommands.registerCommand("AutoStartTransfer", m_transfer.c_runTransferAuto(0.3));
+    NamedCommands.registerCommand("AutoStartTransfer", m_transfer.c_runTransferAuto(1.0));
     NamedCommands.registerCommand("AutoStopTransfer", m_transfer.c_runTransferAuto(0));
     NamedCommands.registerCommand("AutoRevTransfer", m_transfer.c_runTransferAuto(-0.1));
 
@@ -104,6 +108,13 @@ private final ShooterPitch m_ShooterPitch = new ShooterPitch();
     NamedCommands.registerCommand("AutoRotDown", m_LimitSwitchTest.c_runRotAuto(0.05).withTimeout(0.5));
     NamedCommands.registerCommand("AutoRotStop", m_LimitSwitchTest.c_runRotAuto(0));
     NamedCommands.registerCommand("AutoAimSP", m_LimitSwitchTest.c_runRotAuto(0));
+    NamedCommands.registerCommand("PitchPickup", m_ShooterPitch.c_autoSP(-0.17).withTimeout(1));
+    NamedCommands.registerCommand("PitchClose", m_ShooterPitch.c_autoSP(-0.12).withTimeout(1));
+    NamedCommands.registerCommand("PitchCloseSide", m_ShooterPitch.c_autoSP(-0.11).withTimeout(1));
+    NamedCommands.registerCommand("autoIntakeCombo", m_shooter.c_startFlywheelAuto(0, 0));
+    NamedCommands.registerCommand("autoReadyShooter", m_shooter.c_startFlywheelAuto(0, 0));
+    NamedCommands.registerCommand("HoardAuto", m_shooter.c_startFlywheelAuto(0, 0));
+
     
     m_robotDrive = new DriveSubsystem();
 
@@ -154,17 +165,23 @@ private final ShooterPitch m_ShooterPitch = new ShooterPitch();
     // new JoystickButton(m_driverController, 8).whileTrue(new RunCommand(() -> m_blinkin.c_floorBlinkin(), m_blinkin));
     new JoystickButton(m_driverController, 3).whileTrue(new RunCommand(() -> m_blinkin.c_ampBlinkin(), m_blinkin));
 
-    new POVButton(m_driverController, 0).whileTrue(new RunCommand(() -> m_ShooterPitch.Jog(0.5), m_ShooterPitch));
+    new POVButton(m_driverController, 0).whileTrue(new RunCommand(() -> m_ShooterPitch.Jog(0.2), m_ShooterPitch));
     new POVButton(m_driverController, 0).whileFalse(new RunCommand(() -> m_ShooterPitch.Jog(0), m_ShooterPitch));
-    new POVButton(m_driverController, 180).whileTrue(new RunCommand(() -> m_ShooterPitch.Jog(-0.5), m_ShooterPitch));
+    new POVButton(m_driverController, 180).whileTrue(new RunCommand(() -> m_ShooterPitch.Jog(-0.2), m_ShooterPitch));
     new POVButton(m_driverController, 180).whileFalse(new RunCommand(() -> m_ShooterPitch.Jog(0), m_ShooterPitch));
+
+     new POVButton(m_operatorController, 0).whileTrue(new RunCommand(() -> m_ShooterPitch.Jog(0.5), m_ShooterPitch));
+    new POVButton(m_operatorController, 0).whileFalse(new RunCommand(() -> m_ShooterPitch.Jog(0), m_ShooterPitch));
+    new POVButton(m_operatorController, 180).whileTrue(new RunCommand(() -> m_ShooterPitch.Jog(-0.5), m_ShooterPitch));
+    new POVButton(m_operatorController, 180).whileFalse(new RunCommand(() -> m_ShooterPitch.Jog(0), m_ShooterPitch));
+    new JoystickButton(m_driverController, 4).onTrue(new ShootSpeaker(m_robotDrive));
     // new POVButton(m_driverController, 90).onTrue(new RunCommand(()->
     // m_blinkin.c_lightSet(0.73), m_blinkin));
     // new POVButton(m_driverController, 0).onTrue(new RunCommand(()->
     // m_blinkin.c_lightSet(0.71), m_blinkin));
     // new POVButton(m_driverController, 180).onTrue(new RunCommand(()->
     // m_blinkin.c_lightSet(0.75), m_blinkin));
-    // new POVButton(m_driverController, 270).onTrue(new RunCommand(()->
+    // new POVButton(m_driverController, 270).onTrue(new RunCommand((   )->
     // m_blinkin.c_lightSet(0.77), m_blinkin));
 
 // new POVButton(m_driverController, 90).onTrue(new RunCommand(() -> m_rotator.c_rotJog(0.3), m_rotator));
@@ -173,7 +190,7 @@ private final ShooterPitch m_ShooterPitch = new ShooterPitch();
 // new JoystickButton(m_driverController, 8).whileTrue(new RunCommand(() -> m_LimitSwitchTest.c_setMotorSpeed(-0.2), m_LimitSwitchTest));
 
     // new JoystickButton(m_driverController, 1)
-    //     .onTrue(new RunCommand(() -> m_rotator.c_rotatorToSetpoint(0), m_rotator));
+    //     .onTrue(new RunCommand(() -> m_rotator.c_rotatorToSetpoint(0), m_rotator));whileTrue
     // new POVButton(m_driverController, 90).onTrue(new RunCommand(() -> m_rotator.c_rotatorToSetpoint(-7), m_rotator));
     // new POVButton(m_driverController, 0).onTrue(new RunCommand(() -> m_rotator.c_rotatorToSetpoint(-30), m_rotator));
     // new POVButton(m_driverController, 180).onTrue(new RunCommand(() -> m_rotator.c_rotatorToSetpoint(-40), m_rotator));
@@ -183,28 +200,29 @@ private final ShooterPitch m_ShooterPitch = new ShooterPitch();
     //  new POVButton(m_driverController, 0).whileFalse(new RunCommand(() -> m_LimitSwitchTest.c_rotJog(0), m_LimitSwitchTest));
     // new POVButton(m_driverController, 180).onFalse(new RunCommand(() -> m_ShooterPitch.RotToSP(0.70), m_ShooterPitch));
 
-     new JoystickButton(m_driverController, 8).whileTrue(new RunCommand(() -> m_shooter.c_startFlywheel(0.025, 0.4), m_shooter));
+     new JoystickButton(m_driverController, 8).whileTrue(new RunCommand(() -> m_shooter.c_startFlywheel(0.05, 0.3), m_shooter));
      new JoystickButton(m_driverController, 8).whileFalse(new RunCommand(() -> m_shooter.c_startFlywheel(0, 0), m_shooter));
-     new JoystickButton(m_driverController, 8).whileTrue(new RunCommand(() -> m_transfer.c_runTransfer(0.8), m_transfer));
+    //  new JoystickButton(m_driverController, 8).whileTrue(new RunCommand(() -> m_transfer.c_runTransfer(0.8), m_transfer));
      new JoystickButton(m_driverController, 8).whileFalse(new RunCommand(() -> m_shooter.c_startFlywheelAxis(Constants.MyConstants.ktriggerL, 0.75, 0.75), m_shooter));
 
      //OPERATOR CONTROLS
-     new POVButton(m_operatorController, 0).whileTrue(new RunCommand(() -> m_LimitSwitchTest.c_rotJog(-0.4), m_LimitSwitchTest));
-     new POVButton(m_operatorController, 0).whileFalse(new RunCommand(() -> m_LimitSwitchTest.c_rotJog(0), m_LimitSwitchTest));
-    new POVButton(m_operatorController, 180).onTrue(new RunCommand(() -> {m_LimitSwitchTest.c_setMotorSpeed(0.2);
-    }, m_LimitSwitchTest));
-     new POVButton(m_operatorController, 180).whileFalse(new RunCommand(() -> m_LimitSwitchTest.c_rotJog(0), m_LimitSwitchTest));
+    //  new POVButton(m_operatorController, 0).whileTrue(new RunCommand(() -> m_LimitSwitchTest.c_rotJog(-0.4), m_LimitSwitchTest));
+    //  new POVButton(m_operatorController, 0).whileFalse(new RunCommand(() -> m_LimitSwitchTest.c_rotJog(0), m_LimitSwitchTest));
+    // new POVButton(m_operatorController, 180).onTrue(new RunCommand(() -> {m_LimitSwitchTest.c_setMotorSpeed(0.2);
+    // }, m_LimitSwitchTest));
+    //  new POVButton(m_operatorController, 180).whileFalse(new RunCommand(() -> m_LimitSwitchTest.c_rotJog(0), m_LimitSwitchTest));
 
-    new JoystickButton(m_operatorController, 1).onTrue(new RunCommand(() -> {m_LimitSwitchTest.c_setMotorSpeed(0.7);
-    }, m_LimitSwitchTest));
-    new JoystickButton(m_operatorController, 1).onFalse(new RunCommand(() -> {m_LimitSwitchTest.c_setMotorSpeed(0);
-    }, m_LimitSwitchTest));
+    // new JoystickButton(m_operatorController, 1).onTrue(new RunCommand(() -> {m_LimitSwitchTest.c_setMotorSpeed(0.7);
+    // }, m_LimitSwitchTest));
+    // new JoystickButton(m_operatorController, 1).onFalse(new RunCommand(() -> {m_LimitSwitchTest.c_setMotorSpeed(0);
+    // }, m_LimitSwitchTest));
     //   new JoystickButton(m_driverController, 1).whileTrue(new RunCommand(() -> m_rotator.c_rotJog(0.3), m_rotator));
     //  new JoystickButton(m_driverController, 1).whileFalse(new RunCommand(() -> m_rotator.c_rotJog(0), m_rotator));
     new JoystickButton(m_driverController, 1).onTrue(new RunCommand(() -> m_ShooterPitch.RotToSPGrav(-0.17), m_ShooterPitch));
-    new JoystickButton(m_driverController, 1).onFalse(new RunCommand(() -> m_ShooterPitch.RotToSPGrav(-0.02), m_ShooterPitch));
-    new POVButton(m_driverController, 90).onTrue(new RunCommand(() -> m_ShooterPitch.RotToSPGrav(-0.05), m_ShooterPitch));
-    new POVButton(m_driverController, 270).onTrue(new RunCommand(() -> m_ShooterPitch.RotToSPGrav(0.1), m_ShooterPitch));
+    // new JoystickButton(m_driverController, 1).onFalse(new RunCommand(() -> m_ShooterPitch.RotToSPGrav(-0.02), m_ShooterPitch));
+    new POVButton(m_driverController, 90).onTrue(new RunCommand(() -> m_ShooterPitch.RotToSPGrav(-0.02), m_ShooterPitch));
+    new POVButton(m_driverController, 270).onTrue(new RunCommand(() -> m_ShooterPitch.Jog(0.5), m_ShooterPitch));
+    new POVButton(m_driverController, 270).onFalse(new RunCommand(() -> m_ShooterPitch.Jog(0), m_ShooterPitch));
    
     // new JoystickButton(m_driverController, 1).onTrue(new RunCommand(() -> m_ShooterPitch.RotToSP(0.3), m_ShooterPitch));
     // new JoystickButton(m_driverController, 1).onFalse(new RunCommand(() -> m_ShooterPitch.RotToSP(0), m_ShooterPitch));
@@ -214,6 +232,13 @@ private final ShooterPitch m_ShooterPitch = new ShooterPitch();
     new JoystickButton(m_driverController, 3).whileTrue(new RunCommand(() -> m_elevator.c_elevatorUp(), m_elevator));
     new JoystickButton(m_driverController, 3).whileFalse(new RunCommand(() -> m_elevator.c_elevatorDown(), m_elevator));
 
+    new JoystickButton(m_operatorController, 3).onTrue(new RunCommand(() -> m_elevator.c_elevatorUp(), m_elevator));
+    new JoystickButton(m_operatorController, 1).onFalse(new RunCommand(() -> m_elevator.c_elevatorDown(), m_elevator));
+    new JoystickButton(m_operatorController, 2).onFalse(new RunCommand(() -> m_ShooterPitch.Jog(-1), m_ShooterPitch).withTimeout(0.75));
+
+    new JoystickButton(m_operatorController,5).onTrue(new RunCommand(() -> m_ShooterPitch.RotToSPGrav(-0.1), m_ShooterPitch));
+    new JoystickButton(m_operatorController,6).onTrue(new RunCommand(() -> m_ShooterPitch.RotToSPGrav(-0.085), m_ShooterPitch));
+    new POVButton(m_operatorController,270).onTrue(new RunCommand(() -> m_ShooterPitch.RotToSPGrav(-0.07), m_ShooterPitch));
     // new JoystickButton(m_driverController, 3)
     //     .whileTrue(new RunCommand(() -> m_shooter.c_startFlywheel(0.1, 0.6), m_shooter));
     new JoystickButton(m_driverController, 9).whileTrue(new RunCommand(
@@ -238,7 +263,7 @@ private final ShooterPitch m_ShooterPitch = new ShooterPitch();
     // new JoystickButton(m_driverController, 4).whileFalse(new RunCommand(() -> m_intake.c_intakeRun(0), m_intake));
 
     new JoystickButton(m_driverController, OIConstants.kLeftBumper)
-        .whileTrue(new RunCommand(() -> m_transfer.c_runTransfer(0.5), m_transfer));
+        .whileTrue(new RunCommand(() -> m_transfer.c_runTransfer(1.0), m_transfer));
     new JoystickButton(m_driverController, OIConstants.kLeftBumper)
         .whileFalse(new RunCommand(() -> m_transfer.c_startTransferAxis(Constants.MyConstants.ktriggerR, -0.2), m_transfer));
 
@@ -268,7 +293,7 @@ private final ShooterPitch m_ShooterPitch = new ShooterPitch();
     
 
     new JoystickButton(m_driverController, 6).onTrue(new RunCommand(() -> m_ShooterPitch.RotToSP(-0.17), m_ShooterPitch));
-    new JoystickButton(m_driverController, 6).onFalse(new RunCommand(() -> m_ShooterPitch.RotToSP(-0.05), m_ShooterPitch));
+    // new JoystickButton(m_driverController, 6).onFalse(new RunCommand(() -> m_ShooterPitch.RotToSP(-0.05), m_ShooterPitch));
 
 
     new JoystickButton(m_driverController, 2)

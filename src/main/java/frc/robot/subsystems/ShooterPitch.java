@@ -16,6 +16,8 @@ import edu.wpi.first.units.Measure;
 import edu.wpi.first.units.Units;
 import edu.wpi.first.units.Voltage;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class ShooterPitch extends SubsystemBase {
@@ -66,7 +68,7 @@ public class ShooterPitch extends SubsystemBase {
     // This method will be called once per scheduler run
 
     // SmartDashboard.putData("ENCODER");
-    currentPos = aimPIDController.getPosition();
+    // currentPos = aimPIDController.getPosition();
     //  double degrees = (currentPos - MEASUREDPOSHORIZONTAL) / TICKSPERDEGREE;
 
 
@@ -86,11 +88,25 @@ public class ShooterPitch extends SubsystemBase {
     AIM = setpoint;
   }
 
+   public Command c_autoSP(double setpoint) {
+    return new RunCommand(() -> {
+        double cosineScalar = Math.cos(2*Math.PI*(m_aimEncoder.getPosition()));
+   var gravityFF = maxGravityFF.in(Units.Volts) * cosineScalar;
+
+    aimPIDController.setReference(setpoint, ControlType.kPosition, 0, gravityFF, ArbFFUnits.kVoltage);
+    AIM = setpoint;
+        }, this);
+  }
+
   public void Jog (double SPEED) {
     m_aimMotor.set(SPEED);
   }
 
+  public void AfterAmp () {
+    m_aimMotor.set(-0.5);
+  }
+
   public void isAtTarget() {
-    if (AIM == currentPos.getAsDouble)
+    // if (AIM == currentPos.getAsDouble)
   }
 }
