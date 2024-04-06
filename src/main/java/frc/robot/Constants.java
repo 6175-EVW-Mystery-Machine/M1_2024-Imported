@@ -71,8 +71,8 @@ public final class Constants {
     public static final double kMaxSpeedMetersPerSecond = 4.8;
     public static final double kMaxAngularSpeed = 2 * Math.PI; // radians per second
 
-    public static final double kDirectionSlewRate = 1.2; // radians per second
-    public static final double kMagnitudeSlewRate = 1.8; // percent per second (1 = 100%)
+    public static final double kDirectionSlewRate = 1.8; // radians per second
+    public static final double kMagnitudeSlewRate = 2.7; // percent per second (1 = 100%)
     public static final double kRotationalSlewRate = 2.0; // percent per second (1 = 100%)
 
     // Chassis configuration
@@ -136,7 +136,7 @@ public final class Constants {
     public static final double kTurningEncoderPositionPIDMinInput = 0; // radians
     public static final double kTurningEncoderPositionPIDMaxInput = kTurningEncoderPositionFactor; // radians
 
-    public static final double kDrivingP = 0.01;
+    public static final double kDrivingP = 0.05;
     public static final double kDrivingI = 0;
     public static final double kDrivingD = 0;
     public static final double kDrivingFF = 1 / kDriveWheelFreeSpeedRps;

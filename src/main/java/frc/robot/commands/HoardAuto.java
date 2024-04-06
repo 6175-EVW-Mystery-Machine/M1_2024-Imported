@@ -5,6 +5,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.ShooterPitch;
@@ -22,19 +23,18 @@ public class HoardAuto extends SequentialCommandGroup {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
-      m_transfer.c_runTransferAuto(-0.5).withTimeout(0.2),
+      m_transfer.c_runTransferAuto(-0.25).alongWith(m_shooter.c_startFlywheelAuto(-0.2, -0.2)),
+      new WaitCommand(0.1),
       m_transfer.c_runTransferAuto(0),
-      m_shooter.c_startFlywheelAuto(0.4, 0.4),
-      m_shooterPitch.c_autoSP(-0.05).withTimeout(0.5),
-      m_transfer.c_runTransferAuto(1).withTimeout(0.5),
+      m_shooter.c_startFlywheelAuto(0.5, 0.5),
+      m_shooterPitch.c_autoSP(-0.05),
+      new WaitCommand(0.8),
+      m_transfer.c_runTransferAuto(1),
+      new WaitCommand(0.5),
       m_shooterPitch.c_autoSP(-0.17),
       m_intake.c_intakeRunAuto(-0.75),
       m_transfer.c_runTransferAuto(1.0),
-      m_shooter.c_startFlywheelAuto(-0.1, -0.1),
-      m_shooterPitch.c_autoSP(-0.17)
-
-
-
+      m_shooter.c_startFlywheelAuto(-0.1, -0.1)
     );
   }
 }

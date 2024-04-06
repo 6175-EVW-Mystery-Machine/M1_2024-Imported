@@ -2,37 +2,31 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 1.0,
-      "y": 6.74
+      "x": 0.55,
+      "y": 4.1
     },
-    "rotation": -17.569999999999993
+    "rotation": 0
   },
   "command": {
     "type": "sequential",
     "data": {
       "commands": [
         {
-          "type": "named",
-          "data": {
-            "name": "AutoStartFlywheels"
-          }
-        },
-        {
           "type": "wait",
           "data": {
-            "waitTime": 0.5
+            "waitTime": 6.5
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "0NEW 5.1"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "AutoStartTransfer"
-          }
-        },
-        {
-          "type": "wait",
-          "data": {
-            "waitTime": 0.5
+            "name": "autoFirstShot"
           }
         },
         {
@@ -42,19 +36,13 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "5.1"
+                  "pathName": "0NEW 5.2"
                 }
               },
               {
                 "type": "named",
                 "data": {
-                  "name": "AutoStartIntake"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "AutoAimSP"
+                  "name": "autoIntakeCombo"
                 }
               }
             ]

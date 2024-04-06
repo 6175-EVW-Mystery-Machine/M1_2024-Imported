@@ -131,7 +131,8 @@ public class DriveSubsystem extends SubsystemBase {
         });
 
       var estimate = LimelightHelpers.getBotPoseEstimate_wpiBlue("");
-        if (estimate.tagCount > 0) {
+      //ADAM CODE FOR LIMELIGHT
+        if (estimate.tagCount > 0 && !DriverStation.isAutonomous()) {
           m_odometry.addVisionMeasurement(estimate.pose, estimate.timestampSeconds);
         }
 

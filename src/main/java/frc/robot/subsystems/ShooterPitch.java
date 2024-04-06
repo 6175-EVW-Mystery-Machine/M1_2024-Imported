@@ -17,6 +17,7 @@ import edu.wpi.first.units.Units;
 import edu.wpi.first.units.Voltage;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
@@ -31,7 +32,7 @@ public class ShooterPitch extends SubsystemBase {
   private final double TICKSPERDEGREE = 4096 / 360;
   
   // <<<<< SET WITH REV CLIENT >>>>>
-  private final double AIM_kP = 3.0;
+  private final double AIM_kP = 4.0;
   private final double AIM_kI = 0;
   private final double AIM_kD = 0.05;
 
@@ -48,9 +49,11 @@ public class ShooterPitch extends SubsystemBase {
       m_aimEncoder.setZeroOffset(AIM_OFFSET);
       m_aimEncoder.setInverted(false);
 
-     aimPIDController.setP(AIM_kP);
-     aimPIDController.setI(AIM_kI);
-     aimPIDController.setD(AIM_kD);
+     aimPIDController.setP(AIM_kP, 0);
+     aimPIDController.setI(AIM_kI, 0);
+     aimPIDController.setD(AIM_kD, 0);
+
+
 
     //  aimPIDController.setOutputRange(-0.5, 0.5);
     aimPIDController.setPositionPIDWrappingMaxInput(1);
@@ -89,7 +92,7 @@ public class ShooterPitch extends SubsystemBase {
   }
 
    public Command c_autoSP(double setpoint) {
-    return new RunCommand(() -> {
+    return new InstantCommand(() -> {
         double cosineScalar = Math.cos(2*Math.PI*(m_aimEncoder.getPosition()));
    var gravityFF = maxGravityFF.in(Units.Volts) * cosineScalar;
 

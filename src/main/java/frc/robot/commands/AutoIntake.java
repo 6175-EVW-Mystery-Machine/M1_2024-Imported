@@ -5,6 +5,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.ShooterPitch;
@@ -25,6 +26,7 @@ public class AutoIntake extends ParallelCommandGroup {
       m_transfer.c_runTransferAuto(1.0),
       m_shooter.c_startFlywheelAuto(-0.1, -0.1),
       m_shooterPitch.c_autoSP(-0.17)
+      
     );
   }
 }

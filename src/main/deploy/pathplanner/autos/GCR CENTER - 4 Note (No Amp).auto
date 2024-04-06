@@ -2,7 +2,7 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 1.5,
+      "x": 1.34,
       "y": 5.55
     },
     "rotation": 0
@@ -12,21 +12,78 @@
     "data": {
       "commands": [
         {
-          "type": "named",
+          "type": "path",
           "data": {
-            "name": "AutoStartFlywheels"
-          }
-        },
-        {
-          "type": "wait",
-          "data": {
-            "waitTime": 0.75
+            "pathName": "First Shot Fix"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "AutoStartTransfer"
+            "name": "autoFirstShot"
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "autoIntakeCombo"
+                }
+              },
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "0NEW 1.1"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "PitchClose"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "autoReadyShooter"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "autoShoot"
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "0 7.1"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "autoIntakeCombo"
+                }
+              }
+            ]
           }
         },
         {
@@ -40,61 +97,24 @@
           "data": {
             "commands": [
               {
-                "type": "path",
+                "type": "named",
                 "data": {
-                  "pathName": "6.1"
+                  "name": "PitchCloseSide"
                 }
               },
               {
                 "type": "named",
                 "data": {
-                  "name": "AutoIntakeTest"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "AutoTranTest"
-                }
-              },
-              {
-                "type": "sequential",
-                "data": {
-                  "commands": [
-                    {
-                      "type": "wait",
-                      "data": {
-                        "waitTime": 0.5
-                      }
-                    },
-                    {
-                      "type": "named",
-                      "data": {
-                        "name": "AutoShooterTest"
-                      }
-                    }
-                  ]
+                  "name": "autoReadyShooter"
                 }
               }
             ]
           }
         },
         {
-          "type": "path",
-          "data": {
-            "pathName": "6.2"
-          }
-        },
-        {
           "type": "named",
           "data": {
-            "name": "AutoRevTransfer"
-          }
-        },
-        {
-          "type": "wait",
-          "data": {
-            "waitTime": 0.2
+            "name": "autoShoot"
           }
         },
         {
@@ -102,34 +122,15 @@
           "data": {
             "commands": [
               {
-                "type": "named",
+                "type": "path",
                 "data": {
-                  "name": "AutoStopTransfer"
+                  "pathName": "0 7.2"
                 }
               },
               {
                 "type": "named",
                 "data": {
-                  "name": "AutoStartFlywheels"
-                }
-              }
-            ]
-          }
-        },
-        {
-          "type": "race",
-          "data": {
-            "commands": [
-              {
-                "type": "named",
-                "data": {
-                  "name": "AutoRotDown"
-                }
-              },
-              {
-                "type": "wait",
-                "data": {
-                  "waitTime": 0.5
+                  "name": "autoIntakeCombo"
                 }
               }
             ]
@@ -138,7 +139,19 @@
         {
           "type": "path",
           "data": {
-            "pathName": "RaceCenterFromMiddle"
+            "pathName": "0 7.3"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "autoReadyShooter"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "autoShoot"
           }
         }
       ]
