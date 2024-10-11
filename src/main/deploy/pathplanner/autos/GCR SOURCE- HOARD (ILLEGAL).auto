@@ -2,19 +2,19 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 1.5,
-      "y": 5.55
+      "x": 0.55,
+      "y": 4.1
     },
-    "rotation": 0
+    "rotation": 0.0
   },
   "command": {
     "type": "sequential",
     "data": {
       "commands": [
         {
-          "type": "named",
+          "type": "path",
           "data": {
-            "name": "AutoRotDown"
+            "pathName": "0NEW 3.0"
           }
         },
         {
@@ -24,21 +24,21 @@
           }
         },
         {
+          "type": "named",
+          "data": {
+            "name": "PitchClose"
+          }
+        },
+        {
           "type": "wait",
           "data": {
-            "waitTime": 0.75
+            "waitTime": 0.5
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "AutoStartTransfer"
-          }
-        },
-        {
-          "type": "wait",
-          "data": {
-            "waitTime": 0.3
+            "name": "autoShoot"
           }
         },
         {
@@ -48,64 +48,78 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "FRED3"
+                  "pathName": "0NEW 3.1"
                 }
               },
               {
                 "type": "named",
                 "data": {
-                  "name": "AutoTranTest"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "AutoShooterTest"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "AutoIntakeTest"
+                  "name": "autoIntakeCombo"
                 }
               }
             ]
           }
         },
         {
-          "type": "path",
+          "type": "wait",
           "data": {
-            "pathName": "FRED4"
+            "waitTime": 0.5
           }
         },
         {
-          "type": "named",
+          "type": "parallel",
           "data": {
-            "name": "AutoRevTransfer"
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "0NEW 3.2"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "HoardAuto"
+                }
+              }
+            ]
           }
         },
         {
           "type": "wait",
           "data": {
-            "waitTime": 0.2
+            "waitTime": 0.5
           }
         },
         {
-          "type": "named",
+          "type": "parallel",
           "data": {
-            "name": "AutoStartFlywheels"
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "0NEW 3.3"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "HoardAuto"
+                }
+              }
+            ]
           }
         },
         {
           "type": "wait",
           "data": {
-            "waitTime": 0.75
+            "waitTime": 0.5
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "AutoRevTransfer"
+            "name": "HoardAuto"
           }
         }
       ]

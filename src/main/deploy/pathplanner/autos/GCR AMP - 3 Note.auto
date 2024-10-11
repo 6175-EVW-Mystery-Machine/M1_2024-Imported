@@ -2,8 +2,8 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 1.5,
-      "y": 5.55
+      "x": 0.52,
+      "y": 7.0
     },
     "rotation": 0
   },
@@ -11,6 +11,18 @@
     "type": "sequential",
     "data": {
       "commands": [
+        {
+          "type": "path",
+          "data": {
+            "pathName": "0NEW 2.1"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "PitchClose"
+          }
+        },
         {
           "type": "named",
           "data": {
@@ -20,19 +32,13 @@
         {
           "type": "wait",
           "data": {
-            "waitTime": 0.75
+            "waitTime": 0.5
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "AutoStartTransfer"
-          }
-        },
-        {
-          "type": "wait",
-          "data": {
-            "waitTime": 0.5
+            "name": "autoShoot"
           }
         },
         {
@@ -42,59 +48,22 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "6.1"
+                  "pathName": "0NEW 2.2"
                 }
               },
               {
                 "type": "named",
                 "data": {
-                  "name": "AutoIntakeTest"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "AutoTranTest"
-                }
-              },
-              {
-                "type": "sequential",
-                "data": {
-                  "commands": [
-                    {
-                      "type": "wait",
-                      "data": {
-                        "waitTime": 0.5
-                      }
-                    },
-                    {
-                      "type": "named",
-                      "data": {
-                        "name": "AutoShooterTest"
-                      }
-                    }
-                  ]
+                  "name": "autoIntakeCombo"
                 }
               }
             ]
           }
         },
         {
-          "type": "path",
-          "data": {
-            "pathName": "6.2"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "AutoRevTransfer"
-          }
-        },
-        {
           "type": "wait",
           "data": {
-            "waitTime": 0.2
+            "waitTime": 0.25
           }
         },
         {
@@ -104,32 +73,38 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "AutoStopTransfer"
+                  "name": "PitchCloseSide"
                 }
               },
               {
                 "type": "named",
                 "data": {
-                  "name": "AutoStartFlywheels"
+                  "name": "autoReadyShooter"
                 }
               }
             ]
           }
         },
         {
-          "type": "race",
+          "type": "named",
+          "data": {
+            "name": "autoShoot"
+          }
+        },
+        {
+          "type": "parallel",
           "data": {
             "commands": [
               {
-                "type": "named",
+                "type": "path",
                 "data": {
-                  "name": "AutoRotDown"
+                  "pathName": "0NEW 2.3"
                 }
               },
               {
-                "type": "wait",
+                "type": "named",
                 "data": {
-                  "waitTime": 0.5
+                  "name": "autoIntakeCombo"
                 }
               }
             ]
@@ -138,7 +113,51 @@
         {
           "type": "path",
           "data": {
-            "pathName": "RaceCenterFromMiddle"
+            "pathName": "0NEW 2.4"
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "PitchCloseSide"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "autoReadyShooter"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "autoShoot"
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "0NEW 2.3"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "autoIntakeCombo"
+                }
+              }
+            ]
           }
         }
       ]

@@ -2,25 +2,31 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 0.8,
-      "y": 6.76
+      "x": 0.55,
+      "y": 4.1
     },
-    "rotation": 0
+    "rotation": 0.0
   },
   "command": {
     "type": "sequential",
     "data": {
       "commands": [
         {
-          "type": "named",
+          "type": "path",
           "data": {
-            "name": "AutoRotDown"
+            "pathName": "0NEW 3.0"
           }
         },
         {
           "type": "named",
           "data": {
             "name": "AutoStartFlywheels"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "PitchClose"
           }
         },
         {
@@ -32,19 +38,13 @@
         {
           "type": "named",
           "data": {
-            "name": "AutoStartTransfer"
-          }
-        },
-        {
-          "type": "wait",
-          "data": {
-            "waitTime": 1.0
+            "name": "autoShoot"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "8.1"
+            "pathName": "0NEW CHAOS"
           }
         }
       ]

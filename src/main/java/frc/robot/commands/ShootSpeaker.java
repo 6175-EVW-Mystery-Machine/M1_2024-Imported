@@ -11,7 +11,7 @@ public class ShootSpeaker extends Command {
 public static final Translation2d RED_SPEAKER = new Translation2d(16.57997700, 5.54775544);
 public static final Translation2d BLUE_SPEAKER = new Translation2d(0, 5.54775544);
 public static final Rotation2d HALF = Rotation2d.fromDegrees(180);
-private static final double GAIN = 1.0/90.0;
+private static final double GAIN = 1/90.0;
 private static double m_error = 360;
 
 

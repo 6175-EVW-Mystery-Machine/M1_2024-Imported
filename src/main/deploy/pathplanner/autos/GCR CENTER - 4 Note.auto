@@ -1,0 +1,163 @@
+{
+  "version": 1.0,
+  "startingPose": {
+    "position": {
+      "x": 1.34,
+      "y": 5.55
+    },
+    "rotation": 0
+  },
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "path",
+          "data": {
+            "pathName": "First Shot Fix"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "autoFirstShot"
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "autoIntakeCombo"
+                }
+              },
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "0NEW 1.1"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "PitchClose"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "autoReadyShooter"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "autoShoot"
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "autoIntakeCombo"
+                }
+              },
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "0NEW 1.2"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "autoReadyShooter"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "PitchCloseSide"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "autoShoot"
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "0NEW 1.3"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "autoIntakeCombo"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "PitchCloseSide"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "autoReadyShooter"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "autoShoot"
+          }
+        }
+      ]
+    }
+  },
+  "folder": null,
+  "choreoAuto": false
+}

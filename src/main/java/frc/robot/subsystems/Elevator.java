@@ -8,6 +8,8 @@ import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Elevator extends SubsystemBase {
@@ -33,5 +35,19 @@ public class Elevator extends SubsystemBase {
 
    public void c_elevatorDown() {
     m_elevatorDoubleSolenoid.set(DoubleSolenoid.Value.kReverse);
+  }
+
+  public Command com_elevatorUp() {
+    
+    return new InstantCommand(() -> {
+       m_elevatorDoubleSolenoid.set(DoubleSolenoid.Value.kForward);
+    }, this);
+  }
+
+  public Command com_elevatorDown() {
+    
+    return new InstantCommand(() -> {
+      m_elevatorDoubleSolenoid.set(DoubleSolenoid.Value.kReverse);
+    }, this);
   }
 }
